@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import { Fira_Sans } from "next/font/google";
 import "./globals.css";
+
+const poppins = Fira_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--fira-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className='antialiased'
+        className={`${poppins.variable} antialiased`}
       >
         {children}
       </body>
