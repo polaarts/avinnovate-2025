@@ -3,7 +3,8 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { MapPin, Calendar, Clock, ArrowRight, Ticket } from "lucide-react"
+import { MapPin, Calendar, Clock, ArrowRight } from "lucide-react"
+import AddToCartButton from "@/components/add-to-cart-button"
 
 interface Event {
   id: string
@@ -69,7 +70,7 @@ const featuredEvents: Event[] = [
 
 export default function FeaturedEvents() {
   return (
-    <section id="eventos" className="py-16 md:py-24 bg-gradient-to-b from-background via-muted/30 to-background">
+    <section id="eventos" className="py-16 md:py-24 bg-linear-to-b from-background via-muted/30 to-background">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Header mejorado */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-4">
@@ -106,7 +107,7 @@ export default function FeaturedEvents() {
                 />
                 
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
                 {/* Badge de categoría mejorado */}
                 <div className="absolute top-3 right-3 bg-primary/95 backdrop-blur-sm text-primary-foreground px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg border border-primary-foreground/10">
@@ -181,13 +182,22 @@ export default function FeaturedEvents() {
                 </div>
 
                 {/* Botón mejorado */}
-                <Button 
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold py-5 shadow-md hover:shadow-lg transition-all duration-300 group/button flex items-center justify-center gap-2"
-                >
-                  <Ticket className="w-4 h-4 group-hover/button:rotate-12 transition-transform" />
-                  Comprar ahora
-                  <ArrowRight className="w-4 h-4 group-hover/button:translate-x-1 transition-transform" />
-                </Button>
+                <AddToCartButton 
+                  event={{
+                    id: event.id,
+                    title: event.title,
+                    artist: event.artist,
+                    date: event.date,
+                    time: event.time,
+                    location: event.location,
+                    image: event.image,
+                    category: event.category,
+                    price: event.price,
+                  }}
+                  size="default"
+                  className="w-full font-semibold py-5 shadow-md hover:shadow-lg transition-all duration-300"
+                  showIcon={true}
+                />
               </div>
             </Card>
           ))}

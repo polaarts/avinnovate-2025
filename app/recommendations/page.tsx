@@ -7,8 +7,8 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MapPin, Calendar, Clock, Star, Users, Loader2, ShoppingCart } from "lucide-react"
-import { useCartStore } from "@/store/cart-store"
+import { MapPin, Calendar, Clock, Star, Users, Loader2 } from "lucide-react"
+import AddToCartButton from "@/components/add-to-cart-button"
 
 interface Recommendation {
   id: string
@@ -40,7 +40,6 @@ export default function RecommendationsPage() {
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState("all")
   const searchParams = useSearchParams()
-  const addItem = useCartStore((state) => state.addItem)
 
   useEffect(() => {
     const categoryParam = searchParams.get('category')
@@ -73,21 +72,7 @@ export default function RecommendationsPage() {
     }
   }
 
-  const handleAddToCart = (event: Recommendation) => {
-    addItem({
-      id: event.id,
-      title: event.title,
-      artist: event.artist,
-      price: event.price,
-      image: event.image,
-      date: event.date,
-      time: event.time,
-      location: event.location,
-      category: event.category,
-      quantity: 1,
-      isReserved: false,
-    })
-  }
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -235,14 +220,20 @@ export default function RecommendationsPage() {
                             ${event.price.toFixed(2)}
                           </p>
                         </div>
-                        <Button 
+                        <AddToCartButton 
+                          event={{
+                            id: event.id,
+                            title: event.title,
+                            artist: event.artist,
+                            date: event.date,
+                            time: event.time,
+                            location: event.location,
+                            image: event.image,
+                            category: event.category,
+                            price: event.price,
+                          }}
                           size="sm"
-                          onClick={() => handleAddToCart(event)}
-                          className="bg-primary hover:bg-primary/90 gap-1.5"
-                        >
-                          <ShoppingCart className="w-3.5 h-3.5" />
-                          Agregar
-                        </Button>
+                        />
                       </div>
                     </div>
                   </Card>
