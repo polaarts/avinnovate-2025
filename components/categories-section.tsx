@@ -34,7 +34,6 @@ export default function CategoriesSection() {
           {categories.map((category) => (
             <Button
               key={category.id}
-              variant="outline"
               className="h-auto flex flex-col items-center justify-center gap-3 p-6 rounded-lg hover:bg-card hover:border-primary transition-all group cursor-pointer bg-transparent"
             >
               <div className={`${category.color} group-hover:scale-110 transition-transform`}>{category.icon}</div>

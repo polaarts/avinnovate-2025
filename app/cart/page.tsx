@@ -131,7 +131,6 @@ export default function CartPage() {
                           <p className="text-sm text-muted-foreground">{item.artist}</p>
                         </div>
                         <Button 
-                          variant="ghost" 
                           size="sm" 
                           className="text-destructive hover:text-destructive hover:bg-destructive/10"
                           onClick={() => removeItem(item.id)}
@@ -148,9 +147,8 @@ export default function CartPage() {
 
                         <div className="flex items-center gap-4">
                           {/* Cantidad */}
-                          <div className="flex items-center gap-2 border border-border rounded-lg">
+                          <div className="flex items-center gap-2">
                             <Button 
-                              variant="ghost" 
                               size="sm" 
                               className="h-8 w-8 p-0 hover:bg-muted"
                               onClick={() => decreaseQuantity(item.id)}
@@ -160,7 +158,6 @@ export default function CartPage() {
                             </Button>
                             <span className="w-8 text-center font-semibold">{item.quantity}</span>
                             <Button 
-                              variant="ghost" 
                               size="sm" 
                               className="h-8 w-8 p-0 hover:bg-muted"
                               onClick={() => increaseQuantity(item.id)}
@@ -208,17 +205,17 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mb-3">
+              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                 Proceder al Pago
               </Button>
               
               <Link href="/">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full">
                   Continuar Comprando
                 </Button>
               </Link>
 
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+              <div className="p-4 bg-muted/50 rounded-lg">
                 <p className="text-xs text-muted-foreground">
                   <strong>Nota:</strong> Los tickets se enviarán a tu correo electrónico después de completar la compra.
                 </p>
