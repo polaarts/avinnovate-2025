@@ -29,6 +29,11 @@ export default function RootLayout({
           {children}
         </ToastProvider>
       <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
+      <script
+        src="https://unpkg.com/@elevenlabs/convai-widget-embed"
+        async
+        type="text/javascript"
+      ></script>
       </body>
     </html>
   );
