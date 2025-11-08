@@ -22,13 +22,15 @@ interface AddToCartButtonProps {
   size?: "default" | "sm" | "lg" | "icon"
   className?: string
   showIcon?: boolean
+  isReservedByAgent?: boolean // Nuevo parámetro para indicar si proviene del agente de voz
 }
 
 export default function AddToCartButton({ 
   event, 
   size = "sm", 
   className = "",
-  showIcon = true 
+  showIcon = true,
+  isReservedByAgent = false, // Por defecto es false (clicks manuales)
 }: AddToCartButtonProps) {
   const addItem = useCartStore((state) => state.addItem)
   const { addToast } = useToast()
@@ -47,7 +49,7 @@ export default function AddToCartButton({
       location: event.location,
       category: event.category,
       quantity: 1,
-      isReserved: false,
+      isReserved: isReservedByAgent, // Usa el parámetro para determinar la fuente
     })
 
     addToast({

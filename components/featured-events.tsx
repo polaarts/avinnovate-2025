@@ -197,6 +197,7 @@ export default function FeaturedEvents() {
                   size="default"
                   className="w-full font-semibold py-5 shadow-md hover:shadow-lg transition-all duration-300"
                   showIcon={true}
+                  isReservedByAgent={false}
                 />
               </div>
             </Card>
