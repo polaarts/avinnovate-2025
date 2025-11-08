@@ -12,6 +12,7 @@ export interface CartItem {
   price: number
   quantity: number
   category: string
+  isReserved: boolean // Indica si fue reservado por agente de voz o manualmente
 }
 
 interface CartState {
@@ -44,6 +45,7 @@ export const useCartStore = create<CartState>()(
           price: 89.99,
           quantity: 2,
           category: "Música",
+          isReserved: false, // Agregado manualmente
         },
         {
           id: "2",
@@ -56,6 +58,7 @@ export const useCartStore = create<CartState>()(
           price: 45.0,
           quantity: 1,
           category: "Teatro",
+          isReserved: true // Reservado por agente de voz
         },
         {
           id: "3",
@@ -68,6 +71,7 @@ export const useCartStore = create<CartState>()(
           price: 65.0,
           quantity: 4,
           category: "Deportes",
+          isReserved: false, // Agregado manualmente
         },
       ],
 
@@ -134,6 +138,21 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'cart-storage',
+      version: 1, // Incrementar versión para forzar migración
+      migrate: (persistedState: unknown, version: number) => {
+        if (version === 0) {
+          // Migrar datos antiguos agregando isReserved si no existe
+          const state = persistedState as { items: Partial<CartItem>[] }
+          return {
+            ...state,
+            items: state.items.map((item: Partial<CartItem>) => ({
+              ...item,
+              isReserved: item.isReserved ?? false, // Agregar campo si no existe
+            })),
+          }
+        }
+        return persistedState
+      },
     }
   )
 )
