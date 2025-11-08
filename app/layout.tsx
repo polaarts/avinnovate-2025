@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
+import ElevenLabsTest from "@/components/widget";
 
 const poppins = Fira_Sans({
   subsets: ["latin"],
@@ -27,13 +28,9 @@ export default function RootLayout({
       >
         <ToastProvider>
           {children}
+          <ElevenLabsTest />
         </ToastProvider>
-      <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
-      <script
-        src="https://unpkg.com/@elevenlabs/convai-widget-embed"
-        async
-        type="text/javascript"
-      ></script>
+
       </body>
     </html>
   );
