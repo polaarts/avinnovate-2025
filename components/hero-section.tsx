@@ -14,7 +14,7 @@ const categories = [
 
 export default function HeroSection() {
   return (
-    <section className="relative mb-12 bg-gradient-to-br from-primary via-primary/90 to-primary/70 overflow-visible pb-24 md:pb-32">
+    <section className="relative mb-12 bg-primary overflow-visible pb-24 md:pb-32">
       {/* Background decoration - más sutil */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-pulse"></div>
@@ -63,7 +63,6 @@ export default function HeroSection() {
             
             {/* Botón secundario - outline style */}
             <Button 
-              variant="secondary"
               className="px-6 md:px-10 py-4 md:py-5 bg-primary-foreground text-foreground hover:scale-[1.02] active:scale-[0.98] border-2 border-primary-foreground/20 w-full font-semibold text-base md:text-lg flex items-center justify-center gap-2.5 shadow-lg transition-all duration-200 rounded-xl backdrop-blur-sm"
             >
               <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
@@ -87,11 +86,11 @@ export default function HeroSection() {
                 className="bg-card border border-border/50 hover:border-primary/50 rounded-2xl p-5 md:p-7 flex flex-col items-center justify-center gap-3 md:gap-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] group relative overflow-hidden"
               >
                 {/* Efecto de brillo al hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
                 {/* Ícono más grande */}
                 <category.icon 
-                  className={`w-8 h-8 md:w-10 md:h-10 ${category.color} group-hover:scale-125 transition-transform duration-300 relative z-10`} 
+                  className={`w-8 h-8 md:w-10 md:h-10 ${category.color} transition-transform duration-300 relative z-10`} 
                 />
                 
                 <div className="text-center relative z-10">

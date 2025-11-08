@@ -83,7 +83,7 @@ export default function FeaturedEvents() {
             </p>
           </div>
           <Button 
-            className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-6 py-5 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+            className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-6 py-5 font-semibold shadow-lg transition-all duration-300 hover:scale-105 group"
           >
             Ver todos
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
