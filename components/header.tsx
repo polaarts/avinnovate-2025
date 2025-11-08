@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Ticket, Music, Theater, Trophy, Film, Users, ShoppingCart, User, ChevronDown } from "lucide-react"
@@ -21,6 +22,12 @@ export default function Header() {
   }
 
   const cartItemsCount = useCartStore((state) => state.getTotalItems())
+  const initializeCart = useCartStore((state) => state.initializeCart)
+
+  // Initialize cart when header mounts
+  useEffect(() => {
+    initializeCart()
+  }, [initializeCart])
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm">

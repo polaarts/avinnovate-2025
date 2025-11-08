@@ -14,6 +14,8 @@ export default function CartPage() {
   const [mounted, setMounted] = useState(false)
   
   const items = useCartStore((state) => state.items)
+  const isLoading = useCartStore((state) => state.isLoading)
+  const initializeCart = useCartStore((state) => state.initializeCart)
   const removeItem = useCartStore((state) => state.removeItem)
   const increaseQuantity = useCartStore((state) => state.increaseQuantity)
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
@@ -27,13 +29,20 @@ export default function CartPage() {
   const total = getTotal()
   const totalItems = getTotalItems()
 
-  // Prevent hydration mismatch
+  // Prevent hydration mismatch and initialize cart
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0)
     return () => clearTimeout(timer)
   }, [])
 
-  if (!mounted) {
+  // Initialize cart from API
+  useEffect(() => {
+    if (mounted) {
+      initializeCart()
+    }
+  }, [mounted, initializeCart])
+
+  if (!mounted || isLoading) {
     return (
       <div className="min-h-screen bg-background">
         <Header />

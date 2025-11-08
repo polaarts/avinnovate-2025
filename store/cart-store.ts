@@ -17,6 +17,9 @@ export interface CartItem {
 
 interface CartState {
   items: CartItem[]
+  isLoading: boolean
+  isInitialized: boolean
+  initializeCart: () => Promise<void>
   addItem: (item: CartItem) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
@@ -32,48 +35,36 @@ interface CartState {
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      items: [
-        // Items iniciales mockeados
-        {
-          id: "1",
-          title: "Concierto de Verano",
-          artist: "The Midnight Echoes",
-          date: "15 Dic 2024",
-          time: "20:00",
-          location: "Estadio Principal",
-          image: "/concert-stage-lights.png",
-          price: 89.99,
-          quantity: 2,
-          category: "Música",
-          isReserved: false, // Agregado manualmente
-        },
-        {
-          id: "2",
-          title: "Obra Teatral Clásica",
-          artist: "Teatro Nacional",
-          date: "22 Dic 2024",
-          time: "19:30",
-          location: "Teatro Gran Vía",
-          image: "/theater-stage-dramatic-lighting.jpg",
-          price: 45.0,
-          quantity: 1,
-          category: "Teatro",
-          isReserved: true // Reservado por agente de voz
-        },
-        {
-          id: "3",
-          title: "Campeonato de Fútbol",
-          artist: "Liga Profesional",
-          date: "28 Dic 2024",
-          time: "17:00",
-          location: "Estadio Metropolitano",
-          image: "/soccer-football-stadium.jpg",
-          price: 65.0,
-          quantity: 4,
-          category: "Deportes",
-          isReserved: false, // Agregado manualmente
-        },
-      ],
+      items: [],
+      isLoading: false,
+      isInitialized: false,
+
+      initializeCart: async () => {
+        const state = get()
+        
+        // Si ya tiene items (del localStorage) o ya se inicializó, no cargar
+        if (state.items.length > 0 || state.isInitialized) {
+          set({ isInitialized: true })
+          return
+        }
+
+        set({ isLoading: true })
+        try {
+          const response = await fetch('/api/cart/mock-items')
+          const data = await response.json()
+          
+          if (data.success) {
+            set({ 
+              items: data.data,
+              isLoading: false,
+              isInitialized: true
+            })
+          }
+        } catch (error) {
+          console.error('Error loading cart items:', error)
+          set({ isLoading: false, isInitialized: true })
+        }
+      },
 
       addItem: (item) =>
         set((state) => {
