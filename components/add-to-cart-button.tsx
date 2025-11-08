@@ -2,7 +2,7 @@
 
 import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/store/cart-store"
+import { addItem } from "@/lib/cartStore"     // <-- usa el store nuevo
 import { useToast } from "@/components/ui/toast"
 
 export interface EventData {
@@ -22,34 +22,33 @@ interface AddToCartButtonProps {
   size?: "default" | "sm" | "lg" | "icon"
   className?: string
   showIcon?: boolean
-  isReservedByAgent?: boolean // Nuevo parámetro para indicar si proviene del agente de voz
+  isReservedByAgent?: boolean
 }
 
-export default function AddToCartButton({ 
-  event, 
-  size = "sm", 
+export default function AddToCartButton({
+  event,
+  size = "sm",
   className = "",
   showIcon = true,
-  isReservedByAgent = false, // Por defecto es false (clicks manuales)
+  isReservedByAgent = false,
 }: AddToCartButtonProps) {
-  const addItem = useCartStore((state) => state.addItem)
   const { addToast } = useToast()
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation() // Prevenir propagación si está dentro de un card clickeable
-    
+    e.stopPropagation()
+
+    // 👉 usamos la función global addItem()
     addItem({
       id: event.id,
-      title: event.title,
-      artist: event.artist,
+      name: event.title,       // tu <Cart /> usa "name"
       price: event.price,
+      quantity: 1,
       image: event.image,
       date: event.date,
       time: event.time,
       location: event.location,
       category: event.category,
-      quantity: 1,
-      isReserved: isReservedByAgent, // Usa el parámetro para determinar la fuente
+      isReserved: isReservedByAgent,
     })
 
     addToast({
@@ -60,7 +59,7 @@ export default function AddToCartButton({
   }
 
   return (
-    <Button 
+    <Button
       size={size}
       onClick={handleAddToCart}
       className={`bg-primary hover:bg-primary/90 gap-1.5 ${className}`}
