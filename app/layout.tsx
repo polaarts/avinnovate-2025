@@ -25,6 +25,7 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased`}
       >
         {children}
+      <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
       </body>
     </html>
   );

@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { MapPin, Calendar, Clock } from "lucide-react"
+import { MapPin, Calendar, Clock, ArrowRight, Ticket } from "lucide-react"
 
 interface Event {
   id: string
@@ -69,72 +69,136 @@ const featuredEvents: Event[] = [
 
 export default function FeaturedEvents() {
   return (
-    <section id="eventos" className="py-20 bg-muted/50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between mb-12">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-2">Eventos Destacados</h2>
-            <p className="text-muted-foreground">Los mejores eventos que no puedes perderte</p>
+    <section id="eventos" className="py-16 md:py-24 bg-gradient-to-b from-background via-muted/30 to-background">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        {/* Header mejorado */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-4">
+          <div className="space-y-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              Eventos Destacados
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground">
+              Los mejores eventos que no puedes perderte
+            </p>
           </div>
-          <Button className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90">Ver todos</Button>
+          <Button 
+            className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-6 py-5 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+          >
+            Ver todos
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Grid de eventos con mejor espaciado */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {featuredEvents.map((event) => (
-            <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
-              <div className="relative h-48 overflow-hidden bg-muted">
+            <Card 
+              key={event.id} 
+              className="overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group border border-border/50 hover:border-primary/20 bg-card hover:-translate-y-2"
+            >
+              {/* Imagen con overlay mejorado */}
+              <div className="relative h-52 overflow-hidden bg-muted">
                 <Image
                   src={event.image || "/placeholder.svg"}
                   alt={event.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
+                
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Badge de categoría mejorado */}
+                <div className="absolute top-3 right-3 bg-primary/95 backdrop-blur-sm text-primary-foreground px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg border border-primary-foreground/10">
                   {event.category}
                 </div>
+                
+                {/* Badge de descuento mejorado */}
                 {event.originalPrice && (
-                  <div className="absolute top-3 left-3 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold">
+                  <div className="absolute top-3 left-3 bg-accent/95 backdrop-blur-sm text-accent-foreground px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg flex items-center gap-1 animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+                      <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                    </svg>
                     -{Math.round(((event.originalPrice - event.price) / event.originalPrice) * 100)}%
                   </div>
                 )}
               </div>
 
-              <div className="p-4">
-                <p className="text-xs text-muted-foreground font-medium mb-2">{event.artist}</p>
-                <h3 className="font-bold text-lg text-foreground mb-4 line-clamp-2">{event.title}</h3>
+              {/* Contenido de la tarjeta mejorado */}
+              <div className="p-5">
+                {/* Artista */}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide">
+                    {event.artist}
+                  </p>
+                </div>
+                
+                {/* Título */}
+                <h3 className="font-bold text-lg text-foreground mb-4 line-clamp-2 group-hover:text-primary transition-colors">
+                  {event.title}
+                </h3>
 
-                <div className="space-y-2 mb-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    {event.date}
+                {/* Información del evento con mejor diseño */}
+                <div className="space-y-2.5 mb-5">
+                  <div className="flex items-center gap-2.5 text-sm text-muted-foreground group/item hover:text-foreground transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 group-hover/item:bg-primary/10 transition-colors">
+                      <Calendar className="w-4 h-4 group-hover/item:text-primary transition-colors" />
+                    </div>
+                    <span className="font-medium">{event.date}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    {event.time}
+                  
+                  <div className="flex items-center gap-2.5 text-sm text-muted-foreground group/item hover:text-foreground transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 group-hover/item:bg-primary/10 transition-colors">
+                      <Clock className="w-4 h-4 group-hover/item:text-primary transition-colors" />
+                    </div>
+                    <span className="font-medium">{event.time}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    {event.location}
+                  
+                  <div className="flex items-center gap-2.5 text-sm text-muted-foreground group/item hover:text-foreground transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 group-hover/item:bg-primary/10 transition-colors">
+                      <MapPin className="w-4 h-4 group-hover/item:text-primary transition-colors" />
+                    </div>
+                    <span className="font-medium line-clamp-1">{event.location}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-primary">${event.price}</span>
-                    {event.originalPrice && (
-                      <span className="text-sm line-through text-muted-foreground">${event.originalPrice}</span>
-                    )}
+                {/* Precio mejorado */}
+                <div className="flex items-center justify-between mb-4 pt-4 border-t border-border/50">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground font-medium mb-1">Desde</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-primary">
+                        ${event.price}
+                      </span>
+                      {event.originalPrice && (
+                        <span className="text-sm line-through text-muted-foreground font-medium">
+                          ${event.originalPrice}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <Button className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90">Comprar</Button>
+                {/* Botón mejorado */}
+                <Button 
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold py-5 shadow-md hover:shadow-lg transition-all duration-300 group/button flex items-center justify-center gap-2"
+                >
+                  <Ticket className="w-4 h-4 group-hover/button:rotate-12 transition-transform" />
+                  Comprar ahora
+                  <ArrowRight className="w-4 h-4 group-hover/button:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </Card>
           ))}
         </div>
 
-        <Button className="w-full md:hidden mt-8 bg-primary text-primary-foreground hover:bg-primary/90 py-6">
+        {/* Botón móvil mejorado */}
+        <Button 
+          className="w-full md:hidden mt-8 bg-primary text-primary-foreground hover:bg-primary/90 py-6 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+        >
           Ver todos los eventos
+          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
     </section>

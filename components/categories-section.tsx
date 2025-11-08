@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { Button } from "@/components/ui/button"
-import { Music, Theater, Trophy, Gamepad2, Smile, Palette } from "lucide-react"
+import { Music, Theater, Trophy, Film, Users } from "lucide-react"
 
 interface Category {
   id: string
@@ -15,11 +15,10 @@ interface Category {
 
 const categories: Category[] = [
   { id: "musica", name: "Música", icon: <Music className="w-6 h-6" />, color: "text-blue-600", count: 12420 },
-  { id: "teatro", name: "Teatro", icon: <Theater className="w-6 h-6" />, color: "text-purple-600", count: 3240 },
+  { id: "cine", name: "Cine", icon: <Film className="w-6 h-6" />, color: "text-purple-600", count: 8750 },
   { id: "deportes", name: "Deportes", icon: <Trophy className="w-6 h-6" />, color: "text-red-600", count: 5680 },
-  { id: "gaming", name: "Gaming", icon: <Gamepad2 className="w-6 h-6" />, color: "text-yellow-600", count: 2150 },
-  { id: "comedia", name: "Comedia", icon: <Smile className="w-6 h-6" />, color: "text-green-600", count: 1890 },
-  { id: "arte", name: "Arte & Cultura", icon: <Palette className="w-6 h-6" />, color: "text-pink-600", count: 4320 },
+  { id: "teatro", name: "Teatro", icon: <Theater className="w-6 h-6" />, color: "text-pink-600", count: 3240 },
+  { id: "festivales", name: "Festivales", icon: <Users className="w-6 h-6" />, color: "text-green-600", count: 2890 },
 ]
 
 export default function CategoriesSection() {
@@ -31,7 +30,7 @@ export default function CategoriesSection() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Descubre eventos en tus géneros favoritos</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {categories.map((category) => (
             <Button
               key={category.id}
@@ -41,7 +40,7 @@ export default function CategoriesSection() {
               <div className={`${category.color} group-hover:scale-110 transition-transform`}>{category.icon}</div>
               <div className="text-center">
                 <p className="font-semibold text-sm">{category.name}</p>
-                <p className="text-xs text-muted-foreground mt-1">{category.count} eventos</p>
+                <p className="text-xs text-muted-foreground mt-1">{category.count.toLocaleString()} eventos</p>
               </div>
             </Button>
           ))}

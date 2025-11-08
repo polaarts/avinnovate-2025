@@ -2,68 +2,109 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
-import Image from "next/image"
+import { Search, Music, Film, Trophy, Theater, Users, Sparkles } from "lucide-react"
+
+const categories = [
+  { id: "musica", name: "Música", icon: Music, count: "12,420 eventos", color: "text-blue-600" },
+  { id: "cine", name: "Cine", icon: Film, count: "8,750 eventos", color: "text-purple-600" },
+  { id: "deportes", name: "Deportes", icon: Trophy, count: "5,680 eventos", color: "text-red-600" },
+  { id: "teatro", name: "Teatro", icon: Theater, count: "3,240 eventos", color: "text-pink-600" },
+  { id: "festivales", name: "Festivales", icon: Users, count: "2,890 eventos", color: "text-green-600" },
+]
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[300px] bg-gradient-to-br from-primary via-primary/80 to-primary/60 overflow-hidden">
-      {/* Background decoration */}
+    <section className="relative mb-12 bg-gradient-to-br from-primary via-primary/90 to-primary/70 overflow-visible pb-24 md:pb-32">
+      {/* Background decoration - más sutil */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-10 w-80 h-80 bg-accent/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 right-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-pulse"></div>
         <div
-          className="absolute bottom-20 left-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-20 left-10 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
         ></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 py-20 flex flex-col lg:flex-row items-center justify-between gap-12 min-h-[600px] h-[500px]">
+      <div className="relative max-w-4xl mx-auto px-4 py-16 md:py-20 flex flex-col items-center justify-center text-center">
         {/* Content Section */}
-        <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
-          
-
+        <div className="w-full flex flex-col items-center z-10">
+          {/* Título reducido 25% */}
           <h1
-            className="text-5xl md:text-7xl font-extrabold text-primary-foreground mb-6 text-balance leading-tight animate-fade-in"
+            className="text-3xl md:text-5xl font-extrabold text-primary-foreground mb-6 md:mb-8 text-balance leading-tight animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
             Vive Experiencias Inolvidables
           </h1>
 
-          <div className="w-full max-w-2xl mb-4 animate-fade-in px-2 md:px-0" style={{ animationDelay: "0.6s" }}>
+          {/* Barra de búsqueda mejorada */}
+          <div 
+            className="w-full max-w-2xl mb-4 md:mb-5 animate-fade-in px-2 md:px-0" 
+            style={{ animationDelay: "0.6s" }}
+          >
             <div className="relative flex gap-2 md:gap-3">
               <div className="flex-1 relative">
                 <Input
                   placeholder="Busca eventos, artistas o lugares..."
-                  className="w-full pl-10 md:pl-12 pr-3 md:pr-4 py-3 md:py-4 text-sm md:text-base rounded-lg bg-primary-foreground text-foreground placeholder:text-muted-foreground border-0"
+                  className="w-full pl-11 md:pl-14 pr-4 md:pr-5 py-4 md:py-5 text-base md:text-lg rounded-xl bg-primary-foreground text-foreground placeholder:text-muted-foreground border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300 focus-visible:ring-2 focus-visible:ring-accent"
                 />
-                <Search className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+                <Search className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />
               </div>
             </div>
-
           </div>
-            <div className="flex flex-col md:flex-row gap-2 md:gap-2 justify-center w-full max-w-2xl px-2 md:px-0">
-              <Button className="px-4 md:px-8 py-3 md:py-4 bg-accent text-accent-foreground hover:bg-accent/90 w-full font-semibold text-sm md:text-base">Buscar</Button>
-              <Button className="px-4 md:px-8 py-3 md:py-4 bg-accent text-accent-foreground hover:bg-accent/90 w-full font-semibold text-sm md:text-base flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                  <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z" clipRule="evenodd" />
-                </svg>
-                <span className="hidden md:inline">Utilizar asistente</span>
-                <span className="md:hidden">Asistente</span>
-              </Button>
-            </div>
 
+          {/* Botones diferenciados */}
+          <div className="flex flex-col md:flex-row gap-3 md:gap-3 justify-center w-full max-w-2xl px-2 md:px-0">
+            {/* Botón primario - más prominente */}
+            <Button 
+              className="px-6 md:px-10 py-4 md:py-5 bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] w-full font-semibold text-base md:text-lg flex items-center justify-center gap-2.5 shadow-lg transition-all duration-200 rounded-xl"
+            >
+              <Search className="w-5 h-5 md:w-6 md:h-6" />
+              Buscar
+            </Button>
+            
+            {/* Botón secundario - outline style */}
+            <Button 
+              variant="secondary"
+              className="px-6 md:px-10 py-4 md:py-5 bg-primary-foreground text-foreground hover:scale-[1.02] active:scale-[0.98] border-2 border-primary-foreground/20 w-full font-semibold text-base md:text-lg flex items-center justify-center gap-2.5 shadow-lg transition-all duration-200 rounded-xl backdrop-blur-sm"
+            >
+              <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
+              <span className="hidden md:inline">Utilizar asistente</span>
+              <span className="md:hidden">Asistente IA</span>
+            </Button>
+          </div>
         </div>
+      </div>
 
-        {/* Image Section - Oculta en dispositivos pequeños */}
-        <div className="flex-1 hidden lg:block relative w-full animate-fade-in" style={{ animationDelay: "1s" }}>
-          <div className="relative w-full h-[300px] lg:h-[1000px] mt-[50px]">
-            <Image
-              src="/avatar.png"
-              alt="Hero Avatar"
-              fill
-              className="object-contain object-bottom drop-shadow-2xl"
-              priority
-            />
+      {/* Categories Section - Tarjetas mejoradas */}
+      <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div 
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 animate-fade-in" 
+            style={{ animationDelay: "1.2s" }}
+          >
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className="bg-card border border-border/50 hover:border-primary/50 rounded-2xl p-5 md:p-7 flex flex-col items-center justify-center gap-3 md:gap-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] group relative overflow-hidden"
+              >
+                {/* Efecto de brillo al hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Ícono más grande */}
+                <category.icon 
+                  className={`w-8 h-8 md:w-10 md:h-10 ${category.color} group-hover:scale-125 transition-transform duration-300 relative z-10`} 
+                />
+                
+                <div className="text-center relative z-10">
+                  <p className="font-bold text-base md:text-lg text-foreground group-hover:text-primary transition-colors">
+                    {category.name}
+                  </p>
+                  {/* Texto más legible */}
+                  <p className="text-xs md:text-sm text-muted-foreground/80 mt-1.5 font-medium">
+                    {category.count}
+                  </p>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
       </div>

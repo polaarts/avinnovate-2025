@@ -96,7 +96,11 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-
+      <script
+        src="https://unpkg.com/@elevenlabs/convai-widget-embed"
+        async
+        type="text/javascript"
+      ></script>
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-sm text-primary-foreground/70">© 2025 TicketHub. Todos los derechos reservados.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
