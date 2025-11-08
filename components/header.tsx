@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Ticket, Music, Theater, Trophy, Film, Users, ShoppingCart, User, ChevronDown } from "lucide-react"
+import { useCartStore } from "@/store/cart-store"
 
 export default function Header() {
   const categories = [
@@ -19,7 +20,7 @@ export default function Header() {
     email: "hey@samuelangulo.com",
   }
 
-  const cartItemsCount = 3
+  const cartItemsCount = useCartStore((state) => state.getTotalItems())
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm">
