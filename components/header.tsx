@@ -87,7 +87,7 @@ export default function Header() {
             </Button>
             
             {/* Dropdown Menu mejorado */}
-            <div className="absolute top-full right-0 mt-2 w-64 bg-card border border-border/60 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden backdrop-blur-sm group-hover:translate-y-0 translate-y-2">
+            <div className="absolute top-full right-0 mt-3 w-64 bg-card border border-border/60 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden backdrop-blur-sm group-hover:translate-y-0">
               {/* Header del dropdown */}
               <div className="px-4 py-3.5 border-b border-border/60 bg-white">
                 <p className="font-bold text-sm text-foreground">{user.name}</p>
