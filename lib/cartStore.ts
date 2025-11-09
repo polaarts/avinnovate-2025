@@ -1,7 +1,7 @@
 // /src/lib/cartStore.ts
 export type CartItem = {
   id: string
-  name: string      // tu <Cart /> usa name
+  name: string      // your <Cart /> uses name
   price: number
   quantity: number
   image?: string
@@ -18,13 +18,13 @@ export type SeatItem = {
 }
 
 
-// ---- estado de módulo ----
+// ---- module state ----
 let _items: CartItem[] = []
 
 let _seats: SeatItem[] = []
 let _selectedSeat: SeatItem | null = null
 
-// (opcional) hidratar desde localStorage en cliente
+// (optional) hydrate from localStorage on client
 if (typeof window !== "undefined") {
   try {
     const raw = localStorage.getItem("cart:items")
@@ -32,19 +32,19 @@ if (typeof window !== "undefined") {
   } catch {}
 }
 
-// listeners para suscripciones (alternativa a CustomEvent)
+// listeners for subscriptions (alternative to CustomEvent)
 const listeners = new Set<() => void>()
 
 function persistAndNotify() {
   if (typeof window !== "undefined") {
     localStorage.setItem("cart:items", JSON.stringify(_items))
-    window.dispatchEvent(new CustomEvent("cart:changed")) // ya lo usas en <Cart />
+    window.dispatchEvent(new CustomEvent("cart:changed")) // already used in <Cart />
   }
-  // notificar suscriptores
+  // notify subscribers
   listeners.forEach(fn => fn())
 }
 
-// ---------- API pública (plana) ----------
+// ---------- public API (flat) ----------
 export function getItems(): CartItem[] {
   return _items
 }
@@ -76,11 +76,11 @@ export function updateQuantity(id: string, qty: number) {
   }
   persistAndNotify()
 }
-// Cantidad de items en el carrito
+// Number of items in cart
 export function getItemsCount(): number {
   return _items.reduce((acc, it) => acc + it.quantity, 0)
 }
-// ---------- Funciones para asiento seleccionado ----------
+// ---------- Functions for selected seat ----------
 
 export function saveSelectedSeat(seat: SeatItem) {
   _selectedSeat = seat
@@ -105,7 +105,7 @@ export function removeSelectedSeat() {
 }
 
 
-// Suscripción opcional (si no quieres usar window events)
+// Optional subscription (if you don't want to use window events)
 export function subscribeCart(listener: () => void) {
   listeners.add(listener)
   return () => listeners.delete(listener)

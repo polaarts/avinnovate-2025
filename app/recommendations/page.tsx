@@ -27,12 +27,12 @@ interface Recommendation {
 }
 
 const categories = [
-  { id: "all", name: "Todas" },
-  { id: "música", name: "Música" },
-  { id: "cine", name: "Cine" },
-  { id: "deportes", name: "Deportes" },
-  { id: "teatro", name: "Teatro" },
-  { id: "festivales", name: "Festivales" },
+  { id: "all", name: "All" },
+  { id: "música", name: "Music" },
+  { id: "cine", name: "Cinema" },
+  { id: "deportes", name: "Sports" },
+  { id: "teatro", name: "Theater" },
+  { id: "festivales", name: "Festivals" },
 ]
 
 export default function RecommendationsPage() {
@@ -83,10 +83,10 @@ export default function RecommendationsPage() {
           {/* Header Section */}
           <div className="mb-8 md:mb-12">
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
-              Recomendaciones para Ti
+              Recommendations for You
             </h1>
             <p className="text-base md:text-lg text-muted-foreground">
-              Eventos seleccionados especialmente según tus preferencias
+              Events specially selected according to your preferences
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function RecommendationsPage() {
           {!loading && recommendations.length === 0 && (
             <div className="text-center py-20">
               <p className="text-lg text-muted-foreground">
-                No se encontraron recomendaciones para esta categoría
+                No recommendations found for this category
               </p>
             </div>
           )}
@@ -131,7 +131,7 @@ export default function RecommendationsPage() {
             <>
               <div className="mb-4">
                 <p className="text-sm text-muted-foreground">
-                  {recommendations.length} {recommendations.length === 1 ? 'evento encontrado' : 'eventos encontrados'}
+                  {recommendations.length} {recommendations.length === 1 ? 'event found' : 'events found'}
                 </p>
               </div>
               
@@ -204,7 +204,7 @@ export default function RecommendationsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="w-3.5 h-3.5" />
-                          <span>{event.attendees.toLocaleString()} asistentes</span>
+                          <span>{event.attendees.toLocaleString()} attendees</span>
                         </div>
                       </div>
 

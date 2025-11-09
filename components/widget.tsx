@@ -28,7 +28,7 @@ export default function ElevenLabs() {
   const clientTools = {
     testTool: ({ text }: { text: string }) => {
       console.log(events);
-      console.log("✅ Tool ejecutado por el agente con parámetro:", text);
+      console.log("✅ Tool executed by the agent with parameter:", text);
       return "Funciona!";
     },
     GetNombreProduct: ({ nombre }: { nombre: string }) => {
@@ -36,28 +36,28 @@ export default function ElevenLabs() {
       //console.log("🛒 Agregado por widget:", item);
       //return `He agregado "${item.name}" al carrito.`;
     },
-    // Cambia la ruta desde el agente (cliente)
+    // Changes the route from the agent (client)
     NavigateTo: ({ path, replace }: { path: string; replace?: boolean }) => {
-      if (!path || typeof path !== "string") return "Ruta inválida";
+      if (!path || typeof path !== "string") return "Invalid route";
       try {
         replace ? router.replace(path) : router.push(path);
-        return `Navegando a ${path}`;
+        return `Navigating to ${path}`;
       } catch (err) {
-        console.error("❌ Error navegando:", err);
-        return `Error al navegar a ${path}`;
+        console.error("❌ Navigation error:", err);
+        return `Error navigating to ${path}`;
       }
     },
     AddEventByVoice: ({ nombre, quantity }: { nombre: string, quantity: number }) => {
-        console.log("🛒 Agregando nombre y cantidad:", nombre, quantity);
+        console.log("🛒 Adding name and quantity:", nombre, quantity);
         console.log(events);
-        // Si el nombre no existe en events, se pregunta denuevo
+        // If the name doesn't exist in events, ask again
 
-      // Normalizamos el nombre para buscarlo sin errores
+      // Normalize the name to search without errors
 
       const evento = (events as any[]).find(
         (ev) => ev.title.toLowerCase() === nombre.toLowerCase()
       )
-      console.log("🛒 Agregando al carrito por voz:", evento)
+      console.log("🛒 Adding to cart by voice:", evento)
 
       // ✅ Llamada directa a tu función global addItem()
       addItem({
@@ -86,13 +86,13 @@ export default function ElevenLabs() {
       
     },
     SelectSeat:({ seatId }: { seatId: string }) => {
-      console.log("Seleccionando asiento con Id:", seatId);
-      // Aquí podrías llamar a una función para seleccionar el asiento en tu store
+      console.log("Selecting seat with Id:", seatId);
+      // Here you could call a function to select the seat in your store
       saveSelectedSeat({ id: seatId ,name: seatId, quantity: 1 });
-      console.log("Asiento seleccionado",getSelectedSeat());
-      return `Asiento ${seatId} seleccionado.`;
+      console.log("Selected seat",getSelectedSeat());
+      return `Seat ${seatId} selected.`;
     },
-    // Rellena el formulario de checkout mediante un CustomEvent capturado en la página
+    // Fills the checkout form via a CustomEvent captured on the page
     FillCheckoutFields: (payload: {
       firstName?: string;
       lastName?: string;
@@ -111,7 +111,7 @@ export default function ElevenLabs() {
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("checkout:fill", { detail: safe }));
       }
-      return "Datos enviados al checkout";
+      return "Data sent to checkout";
     }
   };
   

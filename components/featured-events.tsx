@@ -24,46 +24,46 @@ const featuredEvents: Event[] = [
     id: "1",
     title: "Chico Trujillo",
     artist: "The Midnight Echoes",
-    date: "15 Dic 2024",
+    date: "Dec 15, 2024",
     time: "20:00",
-    location: "Estadio Principal",
+    location: "Main Stadium",
     image: "/concert-stage-lights.png",
-    category: "Música",
+    category: "Music",
     price: 89.99,
     originalPrice: 120,
   },
   {
     id: "2",
     title: "Beethoven",
-    artist: "Teatro Nacional",
-    date: "22 Dic 2024",
+    artist: "National Theater",
+    date: "Dec 22, 2024",
     time: "19:30",
-    location: "Teatro Gran Vía",
+    location: "Gran Vía Theater",
     image: "/theater-stage-dramatic-lighting.jpg",
-    category: "Teatro",
+    category: "Theater",
     price: 45.0,
   },
   {
     id: "3",
     title: "Colo Colo vs Catolica",
-    artist: "Liga Profesional",
-    date: "28 Dic 2024",
+    artist: "Professional League",
+    date: "Dec 28, 2024",
     time: "17:00",
-    location: "Estadio Metropolitano",
+    location: "Metropolitan Stadium",
     image: "/soccer-football-stadium.jpg",
-    category: "Deportes",
+    category: "Sports",
     price: 65.0,
     originalPrice: 85,
   },
   {
     id: "4",
     title: "Van Gogh",
-    artist: "Multi-artistas",
-    date: "5 Ene 2025",
+    artist: "Multi-artists",
+    date: "Jan 5, 2025",
     time: "10:00",
-    location: "Centro de Exposiciones",
+    location: "Exhibition Center",
     image: "/art-gallery-colorful-paintings.jpg",
-    category: "Arte",
+    category: "Art",
     price: 35.0,
   },
 ]
@@ -76,16 +76,16 @@ export default function FeaturedEvents() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-4">
           <div className="space-y-3">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              Eventos Destacados
+              Featured Events
             </h2>
             <p className="text-base md:text-lg text-muted-foreground">
-              Los mejores eventos que no puedes perderte
+              The best events you can't miss
             </p>
           </div>
-          <Button 
+          <Button
             className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-6 py-5 font-semibold shadow-lg transition-all duration-300 hover:scale-105 group"
           >
-            Ver todos
+            View all
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
@@ -167,7 +167,7 @@ export default function FeaturedEvents() {
                 {/* Precio mejorado */}
                 <div className="flex items-center justify-between mb-4 pt-4 border-t border-border/50">
                   <div className="flex flex-col">
-                    <span className="text-xs text-muted-foreground font-medium mb-1">Desde</span>
+                    <span className="text-xs text-muted-foreground font-medium mb-1">From</span>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl font-bold text-primary">
                         ${event.price}
@@ -205,10 +205,10 @@ export default function FeaturedEvents() {
         </div>
 
         {/* Botón móvil mejorado */}
-        <Button 
+        <Button
           className="w-full md:hidden mt-8 bg-primary text-primary-foreground hover:bg-primary/90 py-6 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
         >
-          Ver todos los eventos
+          View all events
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>

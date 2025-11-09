@@ -61,7 +61,7 @@ export default function QueuePage() {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2 text-main-foreground">
               <Users className="w-5 h-5" />
-              <span className="font-bold text-lg">Personas en la fila antes que tú</span>
+              <span className="font-bold text-lg">People in line before you</span>
             </div>
             <span className="font-bold text-3xl text-main-foreground tabular-nums">
               {peopleInQueue}
@@ -78,18 +78,18 @@ export default function QueuePage() {
 
           <div className="flex items-center justify-between mt-2">
             <p className="text-main-foreground text-sm font-medium">
-              ⏱️ Tiempo estimado de espera: <span className="font-bold">{estimatedWaitTime}s</span>
+              ⏱️ Estimated wait time: <span className="font-bold">{estimatedWaitTime}s</span>
             </p>
-            
+
             {peopleInQueue < 10 && peopleInQueue > 0 && (
               <p className="text-main-foreground text-sm font-semibold">
-                ⚡ ¡Ya casi es tu turno!
+                ⚡ Almost your turn!
               </p>
             )}
 
             {peopleInQueue === 0 && (
               <p className="text-main-foreground text-sm font-semibold">
-                ✅ ¡Es tu turno! Redirigiendo al pago...
+                ✅ It's your turn! Redirecting to payment...
               </p>
             )}
           </div>
@@ -104,24 +104,24 @@ export default function QueuePage() {
             <Image src={"/ticketin.png"} alt="Ticketin" width={500} height={300} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">¿Qué sucede mientras esperas?</h2>
+            <h2 className="text-2xl font-bold">What happens while you wait?</h2>
             <div className="space-y-3 text-muted-foreground">
               <p className="flex items-start gap-2">
                 <span className="text-main font-bold">1.</span>
-                <span>Estamos reservando tu lugar en el sistema</span>
+                <span>We are reserving your spot in the system</span>
               </p>
               <p className="flex items-start gap-2">
                 <span className="text-main font-bold">2.</span>
-                <span>Verificamos la disponibilidad de asientos en tiempo real</span>
+                <span>We verify seat availability in real time</span>
               </p>
               <p className="flex items-start gap-2">
                 <span className="text-main font-bold">3.</span>
-                <span>Preparamos tu experiencia de compra personalizada</span>
+                <span>We prepare your personalized shopping experience</span>
               </p>
             </div>
             <div className="p-4 bg-main/10 border-2 border-border rounded-base">
               <p className="text-sm font-semibold text-foreground">
-                💡 <strong>Consejo:</strong> Mantén esta pestaña abierta. Serás redirigido automáticamente cuando sea tu turno.
+                💡 <strong>Tip:</strong> Keep this tab open. You will be automatically redirected when it's your turn.
               </p>
             </div>
           </div>

@@ -78,25 +78,25 @@ export default function CartPage() {
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Volver a inicio
+          Back to home
         </Link>
 
         {items.length === 0 ? (
           <div className="w-full">
             <div className="flex items-center gap-3 mb-6">
               <ShoppingBag className="w-6 h-6 text-primary" />
-              <h1 className="text-3xl md:text-4xl font-bold">Mi Carrito</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">My Cart</h1>
               <span className="text-muted-foreground">({totalItems} items)</span>
             </div>
             <div className="p-12 text-center">
               <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-              <h2 className="text-2xl font-bold mb-2">Tu carrito está vacío</h2>
+              <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
               <p className="text-muted-foreground mb-6">
-                Explora nuestros eventos y agrega algunos tickets a tu carrito
+                Explore our events and add some tickets to your cart
               </p>
               <Link href="/">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Explorar Eventos
+                  Explore Events
                 </Button>
               </Link>
             </div>
@@ -107,7 +107,7 @@ export default function CartPage() {
             <div className="lg:col-span-2 w-full">
               <div className="flex items-center gap-3 mb-6">
                 <ShoppingBag className="w-6 h-6 text-primary" />
-                <h1 className="text-3xl md:text-4xl font-bold">Mi Carrito</h1>
+                <h1 className="text-3xl md:text-4xl font-bold">My Cart</h1>
                 <span className="text-muted-foreground">({items.length} items)</span>
               </div>
               <div className="space-y-4">
@@ -195,7 +195,7 @@ export default function CartPage() {
             {/* Resumen del pedido */}
             <div className="lg:col-span-1">
               <Card className="p-6 sticky top-24">
-                <h2 className="text-xl font-bold mb-6">Resumen del Pedido</h2>
+                <h2 className="text-xl font-bold mb-6">Order Summary</h2>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-sm">
@@ -203,7 +203,7 @@ export default function CartPage() {
                     <span className="font-semibold">${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Comisión de servicio</span>
+                    <span className="text-muted-foreground">Service fee</span>
                     <span className="font-semibold">${serviceFee.toFixed(2)}</span>
                   </div>
                   <div className="border-t border-border pt-4">
@@ -216,13 +216,13 @@ export default function CartPage() {
 
                 <Link href="/">
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    Proceder al Pago
+                    Proceed to Checkout
                   </Button>
                 </Link>
 
                 <Link href="/">
                   <Button className="w-full">
-                    Continuar Comprando
+                    Continue Shopping
                   </Button>
                 </Link>
               </Card>

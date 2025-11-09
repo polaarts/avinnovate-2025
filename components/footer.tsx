@@ -14,42 +14,42 @@ export default function Footer() {
               TicketHub
             </Link>
             <p className="text-primary-foreground/70 text-sm">
-              Tu plataforma confiable para encontrar y comprar tickets de eventos en vivo.
+              Your trusted platform to find and buy live event tickets.
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Eventos</h4>
+            <h4 className="font-semibold mb-4">Events</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Música
+                  Music
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Teatro
+                  Theater
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Deportes
+                  Sports
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Ver todos
+                  View all
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Compañía</h4>
+            <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Sobre nosotros
+                  About us
                 </Link>
               </li>
               <li>
@@ -59,12 +59,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Contacto
+                  Contact
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Prensa
+                  Press
                 </Link>
               </li>
             </ul>
@@ -75,12 +75,12 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Privacidad
+                  Privacy
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Términos
+                  Terms
                 </Link>
               </li>
               <li>
@@ -90,14 +90,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="#" className="hover:text-primary-foreground transition">
-                  Accesibilidad
+                  Accessibility
                 </Link>
               </li>
             </ul>
           </div>
         </div>
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row items-center justify-between">
-          <p className="text-sm text-primary-foreground/70">© 2025 TicketHub. Todos los derechos reservados.</p>
+          <p className="text-sm text-primary-foreground/70">© 2025 TicketHub. All rights reserved.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <Link href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition">
               Twitter

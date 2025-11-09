@@ -7,17 +7,17 @@ import { Search, Music, Film, Trophy, Theater, Users } from "lucide-react"
 import Image from "next/image"
 
 const categories = [
-  { id: "musica", name: "Música", icon: Music, count: "12,420 eventos", color: "text-main" },
-  { id: "cine", name: "Cine", icon: Film, count: "8,750 eventos", color: "text-main" },
-  { id: "deportes", name: "Deportes", icon: Trophy, count: "5,680 eventos", color: "text-main" },
-  { id: "teatro", name: "Teatro", icon: Theater, count: "3,240 eventos", color: "text-main" },
-  { id: "festivales", name: "Festivales", icon: Users, count: "2,890 eventos", color: "text-main" },
+  { id: "musica", name: "Music", icon: Music, count: "12,420 events", color: "text-main" },
+  { id: "cine", name: "Cinema", icon: Film, count: "8,750 events", color: "text-main" },
+  { id: "deportes", name: "Sports", icon: Trophy, count: "5,680 events", color: "text-main" },
+  { id: "teatro", name: "Theater", icon: Theater, count: "3,240 events", color: "text-main" },
+  { id: "festivales", name: "Festivals", icon: Users, count: "2,890 events", color: "text-main" },
 ]
 
 const carouselImages = [
-  { src: "/cine.jpeg", alt: "Cine" },
-  { src: "/concert.jpeg", alt: "Concierto" },
-  { src: "/teatro.jpeg", alt: "Teatro" },
+  { src: "/cine.jpeg", alt: "Cinema" },
+  { src: "/concert.jpeg", alt: "Concert" },
+  { src: "/teatro.jpeg", alt: "Theater" },
 ]
 
 export default function HeroSection() {
@@ -26,7 +26,7 @@ export default function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length)
-    }, 5000) // Cambia cada 5 segundos
+    }, 5000) // Changes every 5 seconds
 
     return () => clearInterval(interval)
   }, [])
@@ -51,7 +51,7 @@ export default function HeroSection() {
             />
           </div>
         ))}
-        {/* Overlay oscuro para mejor legibilidad del texto */}
+        {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
@@ -75,7 +75,7 @@ export default function HeroSection() {
             <div className="relative flex gap-2 md:gap-3">
               <div className="flex-1 bg-white mt-1 rounded-xl relative">
                 <Input
-                  placeholder="Busca tu evento..."
+                  placeholder="Search for your event..."
                   className=" pl-11 md:pl-14  pr-4 md:pr-5 py-4 md:py-5 text-base md:text-lg rounded-xl bg-primary-foreground text-foreground placeholder:text-muted-foreground border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300 focus-visible:ring-2 focus-visible:ring-accent"
                 />
                 <Search className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />
@@ -90,7 +90,7 @@ export default function HeroSection() {
               className="px-6 md:px-10 bg-white  py-4 md:py-5 text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] w-full font-semibold text-base md:text-lg flex items-center justify-center gap-2.5 shadow-lg transition-all duration-200 rounded-xl"
             >
               <Search className="w-5 h-5 md:w-6 md:h-6" />
-              Buscar
+              Search
             </Button>
             
             {/* Botón secundario - outline style */}

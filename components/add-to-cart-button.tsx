@@ -52,8 +52,8 @@ export default function AddToCartButton({
     })
 
     addToast({
-      title: "✓ Agregado al carrito",
-      description: `${event.title} se ha agregado correctamente`,
+      title: "✓ Added to cart",
+      description: `${event.title} has been successfully added`,
       duration: 3000,
     })
   }
@@ -65,7 +65,7 @@ export default function AddToCartButton({
       className={`bg-primary hover:bg-primary/90 gap-1.5 ${className}`}
     >
       {showIcon && <ShoppingCart className="w-3.5 h-3.5" />}
-      Agregar
+      Add
     </Button>
   )
 }

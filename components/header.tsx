@@ -9,8 +9,8 @@ import { getItemsCount, subscribeCart } from "@/lib/cartStore"
 
 export default function Header() {
   const categories = useMemo(() => ([
-    { id: "", name: "Inicio", icon: House },
-    { id: "recommendations", name: "Ver mis recomendaciones", icon: Star },
+    { id: "", name: "Home", icon: House },
+    { id: "recommendations", name: "View my recommendations", icon: Star },
   ]), [])
 
   // Usuario mock
@@ -104,15 +104,15 @@ export default function Header() {
               <div className="py-2 bg-white">
                 <Link href="#" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-muted/50 transition-colors group/item">
                   <User className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
-                  <span className="group-hover/item:text-primary transition-colors">Mi Perfil</span>
+                  <span className="group-hover/item:text-primary transition-colors">My Profile</span>
                 </Link>
                 <Link href="#" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-muted/50 transition-colors group/item">
                   <Ticket className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
-                  <span className="group-hover/item:text-primary transition-colors">Mis Tickets</span>
+                  <span className="group-hover/item:text-primary transition-colors">My Tickets</span>
                 </Link>
                 <Link href="#" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-muted/50 transition-colors group/item">
                   <ShoppingCart className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
-                  <span className="group-hover/item:text-primary transition-colors">Mis Pedidos</span>
+                  <span className="group-hover/item:text-primary transition-colors">My Orders</span>
                 </Link>
               </div>
               <div className="border-t border-border/60 py-2 bg-white">
@@ -120,7 +120,7 @@ export default function Header() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                   </svg>
-                  Cerrar Sesión
+                  Log Out
                 </button>
               </div>
             </div>

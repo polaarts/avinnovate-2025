@@ -16,7 +16,7 @@ import { saveSelectedSeat, getSelectedSeat, removeSelectedSeat } from "@/lib/car
 const savedPaymentMethod = {
   type: "visa",
   lastDigits: "4242",
-  cardName: "JUAN PÉREZ",
+  cardName: "JOHN SMITH",
   expiryDate: "12/26",
 }
 
@@ -228,12 +228,12 @@ export default function CheckoutPage() {
         <main className="max-w-7xl mx-auto px-4 py-8 md:py-12">
           <div className="text-center py-16">
             <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-            <h2 className="text-2xl font-bold mb-2">Tu carrito está vacío</h2>
+            <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
             <p className="text-muted-foreground mb-6">
-              Agrega algunos eventos antes de proceder al checkout
+              Add some events before proceeding to checkout
             </p>
             <Link href="/">
-              <Button>Explorar Eventos</Button>
+              <Button>Explore Events</Button>
             </Link>
           </div>
         </main>
@@ -253,15 +253,15 @@ export default function CheckoutPage() {
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Volver al carrito
+          Back to cart
         </Link>
 
         {/* Indicador de pasos */}
         <div className="flex items-center justify-center gap-4 mb-8">
           {[
-            { num: 1, label: "Info & Asientos" },
-            { num: 2, label: "Pago" },
-            { num: 3, label: "Confirmación" },
+            { num: 1, label: "Info & Seats" },
+            { num: 2, label: "Payment" },
+            { num: 3, label: "Confirmation" },
           ].map((step, idx) => (
             <div key={step.num} className="flex items-center gap-2">
               <div className="flex flex-col items-center">
@@ -298,25 +298,25 @@ export default function CheckoutPage() {
                 <Card className="p-6">
                   <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                     <User className="w-6 h-6 text-main" />
-                    Información Personal
+                    Personal Information
                   </h2>
 
                   <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold mb-2">Nombre *</label>
+                        <label className="block text-sm font-semibold mb-2">First Name *</label>
                         <Input
                           type="text"
-                          placeholder="Juan"
+                          placeholder="John"
                           value={formData.firstName}
                           onChange={(e) => handleInputChange("firstName", e.target.value)}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold mb-2">Apellido *</label>
+                        <label className="block text-sm font-semibold mb-2">Last Name *</label>
                         <Input
                           type="text"
-                          placeholder="Pérez"
+                          placeholder="Smith"
                           value={formData.lastName}
                           onChange={(e) => handleInputChange("lastName", e.target.value)}
                         />
@@ -326,16 +326,16 @@ export default function CheckoutPage() {
                     <div>
                       <label className="flex text-sm font-semibold mb-2 items-center gap-2">
                         <Mail className="w-4 h-4" />
-                        Correo Electrónico *
+                        Email *
                       </label>
                       <Input
                         type="email"
-                        placeholder="juan.perez@ejemplo.com"
+                        placeholder="john.smith@example.com"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Recibirás tus tickets en este correo
+                        You will receive your tickets at this email
                       </p>
                     </div>
                   </div>
@@ -343,15 +343,15 @@ export default function CheckoutPage() {
 
                 {/* Selección de Asientos */}
                 <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">Selecciona tus Asientos</h2>
+                  <h2 className="text-2xl font-bold mb-4">Select your Seats</h2>
                   <p className="text-sm text-foreground/70 mb-6">
-                    Selecciona {totalItems} asiento{totalItems > 1 ? 's' : ''} para tu compra.
+                    Select {totalItems} seat{totalItems > 1 ? 's' : ''} for your purchase.
                   </p>
 
                   {/* Pantalla/Escenario */}
                   <div className="mb-6">
                     <div className="w-full h-2 bg-main border-2 border-border rounded-base mb-2" />
-                    <p className="text-center text-xs font-bold text-foreground/60">ESCENARIO</p>
+                    <p className="text-center text-xs font-bold text-foreground/60">STAGE</p>
                   </div>
 
                   {/* Matriz de asientos */}
@@ -395,22 +395,22 @@ export default function CheckoutPage() {
                   <div className="flex flex-wrap gap-4 text-xs mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 bg-secondary-background border-2 border-border rounded-base" />
-                      <span>Disponible</span>
+                      <span>Available</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 bg-main border-2 border-border rounded-base" />
-                      <span>Seleccionado</span>
+                      <span>Selected</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 bg-foreground/20 border-2 border-border rounded-base opacity-40" />
-                      <span>No disponible</span>
+                      <span>Not available</span>
                     </div>
                   </div>
 
                   {/* Asientos seleccionados */}
                   {selectedSeats.length > 0 && (
                     <div className="p-4 bg-main/10 border-2 border-border rounded-base">
-                      <p className="font-bold mb-2">Asientos seleccionados:</p>
+                      <p className="font-bold mb-2">Selected seats:</p>
                       <div className="flex flex-wrap gap-2">
                         {selectedSeats.map((seat) => (
                           <span key={seat} className="px-3 py-1 bg-main text-main-foreground text-sm font-bold rounded-base border-2 border-border">
@@ -428,7 +428,7 @@ export default function CheckoutPage() {
                     disabled={!validateStep1()}
                     className="flex-1"
                   >
-                    Continuar al Pago
+                    Continue to Payment
                     {selectedSeats.length < totalItems && (
                       <span className="ml-2">({selectedSeats.length}/{totalItems})</span>
                     )}
@@ -441,7 +441,7 @@ export default function CheckoutPage() {
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                   <CreditCard className="w-6 h-6 text-main" />
-                  Método de Pago
+                  Payment Method
                 </h2>
 
                 <div className="space-y-6">
@@ -488,7 +488,7 @@ export default function CheckoutPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <CreditCard className="w-5 h-5 text-main" />
-                          <span className="font-bold">Agregar nuevo método de pago</span>
+                          <span className="font-bold">Add new payment method</span>
                         </div>
                       </div>
                       {useNewPayment && (
@@ -500,7 +500,7 @@ export default function CheckoutPage() {
                     {useNewPayment && (
                       <div className="mt-4 p-4 border-2 border-border rounded-base space-y-4 bg-secondary-background">
                         <div>
-                          <label className="block text-sm font-semibold mb-2">Número de Tarjeta *</label>
+                          <label className="block text-sm font-semibold mb-2">Card Number *</label>
                           <Input
                             type="text"
                             placeholder="1234 5678 9012 3456"
@@ -515,10 +515,10 @@ export default function CheckoutPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-semibold mb-2">Nombre en la Tarjeta *</label>
+                          <label className="block text-sm font-semibold mb-2">Name on Card *</label>
                           <Input
                             type="text"
-                            placeholder="NOMBRE COMPLETO"
+                            placeholder="FULL NAME"
                             value={formData.cardName}
                             onChange={(e) => handleInputChange("cardName", e.target.value.toUpperCase())}
                           />
@@ -526,10 +526,10 @@ export default function CheckoutPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-semibold mb-2">Expiración *</label>
+                            <label className="block text-sm font-semibold mb-2">Expiration *</label>
                             <Input
                               type="text"
-                              placeholder="MM/AA"
+                              placeholder="MM/YY"
                               maxLength={5}
                               value={formData.expiryDate}
                               onChange={(e) => {
@@ -563,9 +563,9 @@ export default function CheckoutPage() {
                     <div className="flex items-start gap-2">
                       <Lock className="w-5 h-5 text-main mt-0.5 shrink-0" />
                       <div>
-                        <p className="font-bold text-sm mb-1">Pago 100% Seguro</p>
+                        <p className="font-bold text-sm mb-1">100% Secure Payment</p>
                         <p className="text-xs text-foreground/70">
-                          Tu información está protegida con encriptación SSL de 256 bits
+                          Your information is protected with 256-bit SSL encryption
                         </p>
                       </div>
                     </div>
@@ -579,7 +579,7 @@ export default function CheckoutPage() {
                     className="flex-1"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Volver
+                    Back
                   </Button>
                   <Button
                     onClick={handleNextStep}
@@ -589,12 +589,12 @@ export default function CheckoutPage() {
                     {isProcessing ? (
                       <>
                         <span className="animate-spin mr-2">⏳</span>
-                        Procesando...
+                        Processing...
                       </>
                     ) : (
                       <>
                         <Lock className="w-4 h-4" />
-                        Realizar Pago ${total.toFixed(2)}
+                        Make Payment ${total.toFixed(2)}
                       </>
                     )}
                   </Button>
@@ -608,13 +608,13 @@ export default function CheckoutPage() {
                   <CheckCircle className="w-12 h-12 text-main-foreground" />
                 </div>
 
-                <h2 className="text-3xl font-bold mb-3">¡Compra Exitosa!</h2>
+                <h2 className="text-3xl font-bold mb-3">Purchase Successful!</h2>
                 <p className="text-lg text-foreground/70 mb-6">
-                  Tu orden ha sido confirmada
+                  Your order has been confirmed
                 </p>
 
                 <div className="bg-main/10 border-2 border-border rounded-base p-6 mb-6">
-                  <p className="text-sm font-semibold mb-2">Número de Orden</p>
+                  <p className="text-sm font-semibold mb-2">Order Number</p>
                   <p className="text-2xl font-bold text-main">
                     #{orderNumber}
                   </p>
@@ -624,28 +624,28 @@ export default function CheckoutPage() {
                   <p className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-main" />
                     <span>
-                      Confirmación enviada a <strong>{formData.email}</strong>
+                      Confirmation sent to <strong>{formData.email}</strong>
                     </span>
                   </p>
                   <p className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-main" />
-                    <span>Tus tickets han sido enviados por correo electrónico</span>
+                    <span>Your tickets have been sent via email</span>
                   </p>
                   <p className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-main" />
-                    <span>Asientos: <strong>{selectedSeats.join(', ')}</strong></span>
+                    <span>Seats: <strong>{selectedSeats.join(', ')}</strong></span>
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href="/" className="flex-1">
                     <Button variant="neutral" className="w-full">
-                      Volver a Inicio
+                      Back to Home
                     </Button>
                   </Link>
                   <Link href="/recommendations" className="flex-1">
                     <Button className="w-full">
-                      Ver Recomendaciones
+                      View Recommendations
                     </Button>
                   </Link>
                 </div>
@@ -656,7 +656,7 @@ export default function CheckoutPage() {
           {/* Resumen del pedido */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <h2 className="text-xl font-bold mb-6">Resumen del Pedido</h2>
+              <h2 className="text-xl font-bold mb-6">Order Summary</h2>
 
               {/* Items */}
               <div className="space-y-4 mb-6 max-h-80 overflow-y-auto">
@@ -674,7 +674,7 @@ export default function CheckoutPage() {
                       <p className="font-bold text-sm truncate">{item.name}</p>
                       <p className="text-xs text-muted-foreground">{item.category}</p>
                       <div className="flex items-center justify-between mt-1">
-                        <span className="text-xs">Cantidad: {item.quantity}</span>
+                        <span className="text-xs">Quantity: {item.quantity}</span>
                         <span className="text-sm font-bold text-main">
                           ${(item.price * item.quantity).toFixed(2)}
                         </span>
@@ -691,7 +691,7 @@ export default function CheckoutPage() {
                   <span className="font-semibold">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Comisión de servicio (10%)</span>
+                  <span className="text-muted-foreground">Service fee (10%)</span>
                   <span className="font-semibold">${serviceFee.toFixed(2)}</span>
                 </div>
                 <div className="border-t-2 border-border pt-3">
