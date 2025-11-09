@@ -42,7 +42,7 @@ export default function QueuePage() {
     if (mounted && peopleInQueue === 0) {
       // Pequeño delay para que el usuario vea que llegó a 0
       const redirectTimer = setTimeout(() => {
-        router.push("/checkout")
+        router.push("/checkout/1")
       }, 2000) // 2 segundos de delay
 
       return () => clearTimeout(redirectTimer)
