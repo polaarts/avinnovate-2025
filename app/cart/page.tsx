@@ -214,7 +214,7 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Link href="/queue">
+                <Link href="/">
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                     Proceder al Pago
                   </Button>
