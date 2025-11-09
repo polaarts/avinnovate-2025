@@ -8,5 +8,6 @@ export function useRegisterConvaiTools(tools: Record<string, Function>) {
     };
     window.addEventListener("elevenlabs-convai:call", handler);
     return () => window.removeEventListener("elevenlabs-convai:call", handler);
-  }, [tools]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // ✅ Sin dependencias - se ejecuta una sola vez y usa el tools del closure
 }

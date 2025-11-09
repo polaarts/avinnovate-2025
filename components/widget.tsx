@@ -37,12 +37,33 @@ export default function ElevenLabs() {
     AddEventByVoice: ({ nombre, quantity }: { nombre: string, quantity: number }) => {
       console.log("🎤 [AddEventByVoice] Invoked with:", { nombre, quantity });
       
-      const evento = events.find(
-        (ev) => ev.title.toLowerCase() === nombre.toLowerCase()
+      // Validar quantity
+      if (!quantity || quantity < 1) {
+        quantity = 1
+        console.log("⚠️ Invalid quantity, defaulting to 1")
+      }
+      
+      if (quantity > 10) {
+        return `❌ No puedes agregar más de 10 tickets por evento. Si necesitas más, contáctanos.`
+      }
+      
+      // Buscar evento (case-insensitive y fuzzy matching)
+      const normalizedNombre = nombre.toLowerCase().trim()
+      let evento = events.find(
+        (ev) => ev.title.toLowerCase() === normalizedNombre
       )
+      
+      // Búsqueda parcial si no se encuentra exacto
+      if (!evento) {
+        evento = events.find(
+          (ev) => ev.title.toLowerCase().includes(normalizedNombre) ||
+                  normalizedNombre.includes(ev.title.toLowerCase())
+        )
+      }
 
       if (!evento) {
-        return `No encontré un evento llamado "${nombre}".`
+        const eventosDisponibles = events.map(e => e.title).join(', ')
+        return `No encontré un evento llamado "${nombre}". Eventos disponibles: ${eventosDisponibles}.`
       }
       
       console.log("🛒 Agregando al carrito por voz:", evento)
@@ -60,7 +81,8 @@ export default function ElevenLabs() {
         isReserved: true,
       })
 
-      return `✅ He agregado ${quantity} ticket${quantity > 1 ? 's' : ''} de "${evento.title}" al carrito.`
+      const totalInCart = getItemsCount()
+      return `✅ He agregado ${quantity} ticket${quantity > 1 ? 's' : ''} de "${evento.title}" al carrito. Total en carrito: ${totalInCart} tickets.`
     },
 
     // ===== CHECKOUT - SEAT SELECTION TOOLS =====
@@ -72,13 +94,24 @@ export default function ElevenLabs() {
         checkoutState: getCheckoutState()
       })
       
+      // Normalizar a mayúsculas
+      seatId = seatId.toUpperCase().trim()
+      
       // Validar formato del asiento (ej: A1, B12)
       if (!/^[A-J]\d{1,2}$/.test(seatId)) {
         console.log("❌ Invalid format:", seatId)
-        return `❌ Formato de asiento inválido. Usa el formato correcto (ej: A1, B12).`
+        return `❌ Formato de asiento inválido. Usa el formato: Letra (A-J) + Número (1-12). Ejemplo: A1, B12.`
       }
 
       const row = seatId[0]
+      const numStr = seatId.slice(1)
+      const num = parseInt(numStr, 10)
+      
+      // Validar rango de número (1-12)
+      if (num < 1 || num > 12) {
+        return `❌ El asiento ${seatId} no existe. Los números de asiento van del 1 al 12.`
+      }
+      
       // Solo filas A y B están disponibles (según mockUserData)
       if (row !== 'A' && row !== 'B') {
         return `❌ El asiento ${seatId} no está disponible. Solo las filas A y B están disponibles para ti.`
@@ -141,29 +174,39 @@ export default function ElevenLabs() {
         return `❌ Necesitas seleccionar ${totalItems} asientos antes de continuar. Actualmente tienes ${seats.length} seleccionados.`
       }
 
-      // Simular click en el botón "Continuar al Pago"
+      // ✅ Buscar el botón correctamente (sin :has-text que no existe en CSS)
       if (typeof window !== "undefined") {
-        const button = document.querySelector('button:has-text("Continuar al Pago")') as HTMLButtonElement
-        if (button) {
+        const buttons = Array.from(document.querySelectorAll('button'))
+        const button = buttons.find(btn => 
+          btn.textContent?.trim() === "Continuar al Pago" ||
+          btn.textContent?.includes("Continuar")
+        ) as HTMLButtonElement
+        
+        if (button && !button.disabled) {
           button.click()
-          setCurrentStep(2)
-          return `✅ Avanzando al paso de pago. Tus asientos seleccionados son: ${seats.join(', ')}.`
+          console.log("✅ Button clicked successfully")
+        } else {
+          console.log("⚠️ Button not found or disabled, updating state only")
         }
       }
 
       setCurrentStep(2)
-      return `✅ Continuando al paso de pago con los asientos: ${seats.join(', ')}.`
+      return `✅ Avanzando al paso de pago. Tus asientos seleccionados son: ${seats.join(', ')}.`
     },
 
     // ===== CHECKOUT - PAYMENT TOOLS =====
     SelectSavedPayment: () => {
       setUseNewPayment(false)
       
-      // Simular click en el radio button del método guardado
+      // ✅ Seleccionar el radio button correctamente
       if (typeof window !== "undefined") {
-        const radio = document.querySelector('input[type="radio"][name="paymentMethod"]:not([checked])') as HTMLInputElement
-        if (radio && !radio.checked) {
-          radio.click()
+        const radios = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="paymentMethod"]')
+        // El primer radio es el método guardado
+        const savedPaymentRadio = radios[0]
+        
+        if (savedPaymentRadio && !savedPaymentRadio.checked) {
+          savedPaymentRadio.click()
+          console.log("✅ Saved payment method selected")
         }
       }
 
@@ -196,11 +239,17 @@ export default function ElevenLabs() {
         }
       }
 
-      // Simular click en el botón "Realizar Pago"
+      // ✅ Buscar el botón correctamente
       if (typeof window !== "undefined") {
-        const button = document.querySelector('button:has-text("Realizar Pago")') as HTMLButtonElement
+        const buttons = Array.from(document.querySelectorAll('button'))
+        const button = buttons.find(btn => 
+          btn.textContent?.includes("Realizar Pago") ||
+          btn.textContent?.includes("Pagar")
+        ) as HTMLButtonElement
+        
         if (button && !button.disabled) {
           button.click()
+          console.log("✅ Payment button clicked")
           return `✅ Procesando tu pago... Por favor espera un momento.`
         }
       }
@@ -210,16 +259,21 @@ export default function ElevenLabs() {
     },
 
     GoBackToSeats: () => {
-      setCurrentStep(1)
-
-      // Simular click en el botón "Volver"
+      // ✅ Buscar el botón correctamente
       if (typeof window !== "undefined") {
-        const button = document.querySelector('button:has-text("Volver")') as HTMLButtonElement
+        const buttons = Array.from(document.querySelectorAll('button'))
+        const button = buttons.find(btn => 
+          btn.textContent?.trim() === "Volver" ||
+          btn.textContent?.includes("Atrás")
+        ) as HTMLButtonElement
+        
         if (button) {
           button.click()
+          console.log("✅ Back button clicked")
         }
       }
 
+      setCurrentStep(1)
       return `✅ Volviendo a la selección de asientos. Puedes modificar tus asientos seleccionados.`
     },
 
