@@ -1,14 +1,9 @@
 "use client";
 
-import React from "react";
-//import { addItemByName } from "@/lib/cartStore";
-import { useRegisterConvaiTools } from "@/hooks/useRegisterConvaiTools";
-import { addItem } from "@/lib/cartStore" // ✅ importa la función
-import events from "@/data/events.json" assert { type: "json" } // para buscar el evento
+import React, { useEffect, useRef } from "react";
+import { addItem } from "@/lib/cartStore";
+import events from "@/data/events.json" assert { type: "json" };
 
-
-
-// 1. Declaramos el custom element para TypeScript
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -21,75 +16,65 @@ declare global {
 }
 
 export default function ElevenLabs() {
-  // Definimos los client tools en el scope del componente
-  const clientTools = {
-    testTool: ({ text }: { text: string }) => {
-      console.log(events);
-      console.log("✅ Tool ejecutado por el agente con parámetro:", text);
-      return "Funciona!";
-    },
-    GetNombreProduct: ({ nombre }: { nombre: string }) => {
-      //const item = addItemByName(nombre);
-      //console.log("🛒 Agregado por widget:", item);
-      //return `He agregado "${item.name}" al carrito.`;
-    },
-    AddEventByVoice: ({ nombre, quantity }: { nombre: string, quantity: number }) => {
-        console.log("🛒 Agregando nombre y cantidad:", nombre, quantity);
-        console.log(events);
-        // Si el nombre no existe en events, se pregunta denuevo
-        if (nombre ) {
-            return "¿No encuentro ese evento? ¿Qué evento te gustaría agregar al carrito?";
+  const lastEventTime = useRef<number>(0);
 
+  useEffect(() => {
+    // 🔁 Polling cada 2 segundos
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch("/api/add-to-cart", { method: "POST" });
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (!data?.timestamp || data.timestamp === lastEventTime.current) return;
+
+        lastEventTime.current = data.timestamp;
+        const { nombre, quantity } = data;
+
+        console.log("📢 Evento recibido del backend:", nombre, quantity);
+
+        const foundEvent = events.find((e) =>
+          e.name.toLowerCase().includes(nombre.toLowerCase())
+        );
+
+        if (!foundEvent) {
+          console.warn("⚠️ Evento no encontrado:", nombre);
+          return;
         }
 
+        addItem({
+          id: foundEvent.id,
+          name: foundEvent.name,
+          price: foundEvent.price,
+          quantity: quantity || 1,
+          image: foundEvent.image,
+          date: foundEvent.date,
+          time: foundEvent.time,
+          location: foundEvent.location,
+          category: foundEvent.category,
+          isReserved: true,
+        });
 
-
-
-      // Normalizamos el nombre para buscarlo sin errores
-        
-      const evento = (events as any[]).find(
-        (ev) => ev.title.toLowerCase() === nombre.toLowerCase()
-      )
-
-      if (!evento) {
-        return `No encontré un evento llamado "${nombre}".`
+        console.log(`🛒 Agregado al carrito: ${foundEvent.name}`);
+      } catch (err) {
+        console.error("❌ Error consultando backend:", err);
       }
-      console.log("🛒 Agregando al carrito por voz:", evento)
+    }, 2000);
 
-      // ✅ Llamada directa a tu función global addItem()
-      addItem({
-        id: evento.id,
-        name: evento.title,         // tu carrito usa "name"
-        price: evento.price,
-        // Quantity variable si no, 1 por defecto
-        quantity: quantity,
-        image: evento.image,
-        date: evento.date,
-        time: evento.time,
-        location: evento.location,
-        category: evento.category,
-        isReserved: true,           // para marcar que vino del agente
-      })
+    return () => clearInterval(interval);
+  }, []);
 
-      return `He agregado "${evento.title}" al carrito.`
-    },
-  };
-  
-
-  // Registramos el handler usando el hook reutilizable
-  useRegisterConvaiTools(clientTools);
+  // Carga del widget
+  useEffect(() => {
+    if (!document.querySelector('script[src*="convai-widget-embed"]')) {
+      const script = document.createElement("script");
+      script.src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   return (
-    <>
-      {/* El widget en sí */}
-      <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
-
-      {/* Carga del script del widget */}
-      <script
-        src="https://unpkg.com/@elevenlabs/convai-widget-embed"
-        async
-        type="text/javascript"
-      ></script>
-    </>
+    <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
   );
 }

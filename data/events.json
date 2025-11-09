@@ -1,19 +1,19 @@
 [
   {
     "id": "1",
-    "title": "Concierto de Verano",
+    "title": "Chico Trujillo",
     "artist": "The Midnight Echoes",
     "date": "15 Dic 2024",
     "time": "20:00",
     "location": "Estadio Principal",
     "image": "/concert-stage-lights.png",
-    "category": "Música",
+    "category": "Music",
     "price": 89.99,
     "originalPrice": 120
   },
   {
     "id": "2",
-    "title": "Obra Teatral Clásica",
+    "title": "Beethoven",
     "artist": "Teatro Nacional",
     "date": "22 Dic 2024",
     "time": "19:30",
@@ -23,8 +23,8 @@
     "price": 45.0
   },
   {
-    "id": "3",
-    "title": "Campeonato de Fútbol",
+    "id": "3",  
+    "title": "Colo Colo vs Catolica",
     "artist": "Liga Profesional",
     "date": "28 Dic 2024",
     "time": "17:00",
@@ -36,7 +36,7 @@
   },
   {
     "id": "4",
-    "title": "Festival de Artes",
+    "title": "Van Gogh",
     "artist": "Multi-artistas",
     "date": "5 Ene 2025",
     "time": "10:00",
@@ -46,3 +46,4 @@
     "price": 35.0
   }
 ]
+

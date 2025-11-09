@@ -21,52 +21,54 @@ interface Event {
 
 const featuredEvents: Event[] = [
   {
-    id: "1",
-    title: "Concierto de Verano",
-    artist: "The Midnight Echoes",
-    date: "15 Dic 2024",
-    time: "20:00",
-    location: "Estadio Principal",
-    image: "/concert-stage-lights.png",
-    category: "Música",
-    price: 89.99,
-    originalPrice: 120,
+    "id": "1",
+    "title": "Chico Trujillo",
+    "artist": "The Midnight Echoes",
+    "date": "15 Dic 2024",
+    "time": "20:00",
+    "location": "Estadio Principal",
+    "image": "/concert-stage-lights.png",
+    "category": "Music",
+    "price": 89.99,
+    "originalPrice": 120
   },
   {
-    id: "2",
-    title: "Obra Teatral Clásica",
-    artist: "Teatro Nacional",
-    date: "22 Dic 2024",
-    time: "19:30",
-    location: "Teatro Gran Vía",
-    image: "/theater-stage-dramatic-lighting.jpg",
-    category: "Teatro",
-    price: 45.0,
+    "id": "2",
+    "title": "Beethoven",
+    "artist": "Teatro Nacional",
+    "date": "22 Dic 2024",
+    "time": "19:30",
+    "location": "Teatro Gran Vía",
+    "image": "/theater-stage-dramatic-lighting.jpg",
+    "category": "Teatro",
+    "price": 45.0
   },
   {
-    id: "3",
-    title: "Campeonato de Fútbol",
-    artist: "Liga Profesional",
-    date: "28 Dic 2024",
-    time: "17:00",
-    location: "Estadio Metropolitano",
-    image: "/soccer-football-stadium.jpg",
-    category: "Deportes",
-    price: 65.0,
-    originalPrice: 85,
+    "id": "3",  
+    "title": "Colo Colo vs Catolica",
+    "artist": "Liga Profesional",
+    "date": "28 Dic 2024",
+    "time": "17:00",
+    "location": "Estadio Metropolitano",
+    "image": "/soccer-football-stadium.jpg",
+    "category": "Deportes",
+    "price": 65.0,
+    "originalPrice": 85
   },
   {
-    id: "4",
-    title: "Festival de Artes",
-    artist: "Multi-artistas",
-    date: "5 Ene 2025",
-    time: "10:00",
-    location: "Centro de Exposiciones",
-    image: "/art-gallery-colorful-paintings.jpg",
-    category: "Arte",
-    price: 35.0,
-  },
+    "id": "4",
+    "title": "Van Gogh",
+    "artist": "Multi-artistas",
+    "date": "5 Ene 2025",
+    "time": "10:00",
+    "location": "Centro de Exposiciones",
+    "image": "/art-gallery-colorful-paintings.jpg",
+    "category": "Arte",
+    "price": 35.0
+  }
 ]
+
+
 
 export default function FeaturedEvents() {
   return (
