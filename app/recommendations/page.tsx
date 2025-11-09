@@ -233,7 +233,6 @@ export default function RecommendationsPage() {
                             price: event.price,
                           }}
                           size="sm"
-                          isReservedByAgent={false}
                         />
                       </div>
                     </div>

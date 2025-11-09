@@ -9,16 +9,6 @@ import Footer from "@/components/footer"
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, ShoppingCart } from "lucide-react"
 import { useEffect, useState } from "react"
 
-// 👇 importa tu API PLANA del carrito
-import {
-  getItems,
-  getItemsCount,
-  removeItemByName,
-  updateQuantity,
-  subscribeCart,
-  type CartItem,
-} from "@/lib/cartStore"
-
 export default function CartPage() {
   const [mounted, setMounted] = useState(false)
   const [items, setItems] = useState<CartItem[]>([])
@@ -29,28 +19,11 @@ export default function CartPage() {
     return () => clearTimeout(t)
   }, [])
 
-  // Cargar snapshot inicial + mantenerse sincronizado
-  useEffect(() => {
-    if (!mounted) return
-
-    const load = () => setItems(getItems())
-    load()
-
-    const unsubscribe = subscribeCart(load)
-
-    window.addEventListener("cart:changed", load)
-
-    return () => {
-      unsubscribe()
-      window.removeEventListener("cart:changed", load)
-    }
-  }, [mounted])
 
   // Totales (puedes usar helpers del store o calcular aquí)
   const subtotal = items.reduce((acc, it) => acc + it.price * it.quantity, 0)
   const serviceFee = 0 // ajusta si tienes una comisión (p.ej. 0.1 * subtotal)
   const total = subtotal + serviceFee
-  const totalItems = getItemsCount()
 
   if (!mounted) {
     return (
@@ -86,7 +59,6 @@ export default function CartPage() {
             <div className="flex items-center gap-3 mb-6">
               <ShoppingBag className="w-6 h-6 text-primary" />
               <h1 className="text-3xl md:text-4xl font-bold">Mi Carrito</h1>
-              <span className="text-muted-foreground">({totalItems} items)</span>
             </div>
             <div className="p-12 text-center">
               <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
@@ -132,11 +104,6 @@ export default function CartPage() {
                               {item.category && (
                                 <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded">
                                   {item.category}
-                                </span>
-                              )}
-                              {item.isReserved && (
-                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded shadow-sm">
-                                  Reservado
                                 </span>
                               )}
                             </div>
@@ -204,7 +171,6 @@ export default function CartPage() {
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal ({totalItems} tickets)</span>
                     <span className="font-semibold">${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">

@@ -5,8 +5,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Ticket, Music, Theater, Trophy, Film, House, ShoppingCart, User, ChevronDown, Star } from "lucide-react"
 
-import { getItemsCount, subscribeCart } from "@/lib/cartStore"
-
 export default function Header() {
   const categories = useMemo(() => ([
     { id: "", name: "Inicio", icon: House },
@@ -19,22 +17,6 @@ export default function Header() {
   // ✅ estado local que se actualiza con el store
   const [cartCount, setCartCount] = useState(0)
 
-  useEffect(() => {
-    // snapshot inicial
-    const load = () => setCartCount(getItemsCount())
-    load()
-
-    // suscripción directa al store
-    const unsubscribe = subscribeCart(load)
-
-    // también escucha el CustomEvent (por si mutas desde otro lado)
-    window.addEventListener("cart:changed", load)
-
-    return () => {
-      unsubscribe()
-      window.removeEventListener("cart:changed", load)
-    }
-  }, [])
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm">
