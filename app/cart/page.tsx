@@ -237,10 +237,10 @@ export default function CartPage() {
                 </div>
               </Card>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
-
+      
       <Footer />
     </div>
   )

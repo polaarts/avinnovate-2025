@@ -3,17 +3,14 @@
 import { useEffect, useState, useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Ticket, Music, Theater, Trophy, Film, Users, ShoppingCart, User, ChevronDown } from "lucide-react"
+import { Ticket, Music, Theater, Trophy, Film, House, ShoppingCart, User, ChevronDown, Star } from "lucide-react"
 
 import { getItemsCount, subscribeCart } from "@/lib/cartStore"
 
 export default function Header() {
   const categories = useMemo(() => ([
-    { id: "musica", name: "Música", icon: Music },
-    { id: "cine", name: "Cine", icon: Film },
-    { id: "deportes", name: "Deportes", icon: Trophy },
-    { id: "teatro", name: "Teatro", icon: Theater },
-    { id: "festivales", name: "Festivales", icon: Users },
+    { id: "", name: "Inicio", icon: House },
+    { id: "recommendations", name: "Ver mis recomendaciones", icon: Star },
   ]), [])
 
   // Usuario mock
@@ -43,7 +40,8 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link 
+        <div className="flex flex-row ml-4">
+          <Link 
           href="/" 
           className="flex items-center gap-2 font-bold text-lg md:text-xl text-primary shrink-0 hover:text-primary/80 transition-colors group"
         >
@@ -52,7 +50,7 @@ export default function Header() {
         </Link>
 
         {/* Nav */}
-        <nav className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+        <nav className="hidden lg:flex ml-6 items-center gap-7 flex-1 justify-center">
           {categories.map((category) => (
             <Link
               key={category.id}
@@ -66,6 +64,7 @@ export default function Header() {
           ))}
         </nav>
         </div>
+
 
         <div className="flex items-center gap-2 md:gap-3">
           {/* Carrito */}
@@ -127,7 +126,8 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+
     </header>
   )
 }
