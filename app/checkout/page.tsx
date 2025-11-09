@@ -8,15 +8,25 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { ArrowLeft, CreditCard, Lock, CheckCircle, ShoppingBag, User, Mail, Phone, MapPin } from "lucide-react"
+import { ArrowLeft, CreditCard, Lock, CheckCircle, ShoppingBag, User, Mail, Phone } from "lucide-react"
 import { getItems, getItemsCount, type CartItem } from "@/lib/cartStore"
+
+// Método de pago guardado (mockeado)
+const savedPaymentMethod = {
+  type: "visa",
+  lastDigits: "4242",
+  cardName: "JUAN PÉREZ",
+  expiryDate: "12/26",
+}
 
 export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false)
   const [items, setItems] = useState<CartItem[]>([])
-  const [currentStep, setCurrentStep] = useState(1) // 1: Info, 2: Pago, 3: Confirmación
+  const [currentStep, setCurrentStep] = useState(1) // 1: Info + Asientos, 2: Pago, 3: Confirmación
   const [isProcessing, setIsProcessing] = useState(false)
   const [orderNumber, setOrderNumber] = useState("")
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([])
+  const [useNewPayment, setUseNewPayment] = useState(false)
 
   // Datos del formulario
   const [formData, setFormData] = useState({
@@ -25,13 +35,7 @@ export default function CheckoutPage() {
     lastName: "",
     email: "",
     phone: "",
-    // Dirección
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "",
-    // Información de pago
+    // Información de pago (para nuevo método)
     cardNumber: "",
     cardName: "",
     expiryDate: "",
@@ -58,16 +62,33 @@ export default function CheckoutPage() {
     }))
   }
 
+  const handleSeatClick = (seatId: string, isAvailable: boolean) => {
+    if (!isAvailable) return
+    
+    if (selectedSeats.includes(seatId)) {
+      // Deseleccionar
+      setSelectedSeats(selectedSeats.filter((id) => id !== seatId))
+    } else {
+      // Seleccionar (si no excede el límite)
+      if (selectedSeats.length < totalItems) {
+        setSelectedSeats([...selectedSeats, seatId])
+      }
+    }
+  }
+
   const validateStep1 = () => {
     return (
       formData.firstName.trim() !== "" &&
       formData.lastName.trim() !== "" &&
       formData.email.trim() !== "" &&
-      formData.phone.trim() !== ""
+      formData.phone.trim() !== "" &&
+      selectedSeats.length === totalItems
     )
   }
 
   const validateStep2 = () => {
+    if (!useNewPayment) return true // Si usa método guardado, siempre válido
+    
     return (
       formData.cardNumber.trim() !== "" &&
       formData.cardName.trim() !== "" &&
@@ -148,7 +169,7 @@ export default function CheckoutPage() {
         {/* Indicador de pasos */}
         <div className="flex items-center justify-center gap-4 mb-8">
           {[
-            { num: 1, label: "Información" },
+            { num: 1, label: "Info & Asientos" },
             { num: 2, label: "Pago" },
             { num: 3, label: "Confirmación" },
           ].map((step, idx) => (
@@ -182,200 +203,280 @@ export default function CheckoutPage() {
           {/* Formulario de checkout */}
           <div className="lg:col-span-2">
             {currentStep === 1 && (
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <User className="w-6 h-6 text-main" />
-                  Información Personal
-                </h2>
+              <div className="space-y-6">
+                {/* Información Personal */}
+                <Card className="p-6">
+                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <User className="w-6 h-6 text-main" />
+                    Información Personal
+                  </h2>
 
-                <div className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Nombre *</label>
-                      <Input
-                        type="text"
-                        placeholder="Juan"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange("firstName", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Apellido *</label>
-                      <Input
-                        type="text"
-                        placeholder="Pérez"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange("lastName", e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="flex text-sm font-semibold mb-2 items-center gap-2">
-                      <Mail className="w-4 h-4" />
-                      Correo Electrónico *
-                    </label>
-                    <Input
-                      type="email"
-                      placeholder="juan.perez@ejemplo.com"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Recibirás tus tickets en este correo
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className="flex text-sm font-semibold mb-2 items-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      Teléfono *
-                    </label>
-                    <Input
-                      type="tel"
-                      placeholder="+1 234 567 8900"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="pt-4 border-t-2 border-border">
-                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <MapPin className="w-5 h-5 text-main" />
-                      Dirección de Facturación (Opcional)
-                    </h3>
-
-                    <div className="space-y-4">
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold mb-2">Dirección</label>
+                        <label className="block text-sm font-semibold mb-2">Nombre *</label>
                         <Input
                           type="text"
-                          placeholder="Calle Principal 123"
-                          value={formData.address}
-                          onChange={(e) => handleInputChange("address", e.target.value)}
+                          placeholder="Juan"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange("firstName", e.target.value)}
                         />
                       </div>
-
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-semibold mb-2">Ciudad</label>
-                          <Input
-                            type="text"
-                            placeholder="Ciudad"
-                            value={formData.city}
-                            onChange={(e) => handleInputChange("city", e.target.value)}
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-semibold mb-2">Estado/Provincia</label>
-                          <Input
-                            type="text"
-                            placeholder="Estado"
-                            value={formData.state}
-                            onChange={(e) => handleInputChange("state", e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-semibold mb-2">Código Postal</label>
-                          <Input
-                            type="text"
-                            placeholder="12345"
-                            value={formData.zipCode}
-                            onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-semibold mb-2">País</label>
-                          <Input
-                            type="text"
-                            placeholder="País"
-                            value={formData.country}
-                            onChange={(e) => handleInputChange("country", e.target.value)}
-                          />
-                        </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Apellido *</label>
+                        <Input
+                          type="text"
+                          placeholder="Pérez"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange("lastName", e.target.value)}
+                        />
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="flex gap-3 mt-6 pt-6 border-t-2 border-border">
+                    <div>
+                      <label className="flex text-sm font-semibold mb-2 items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        Correo Electrónico *
+                      </label>
+                      <Input
+                        type="email"
+                        placeholder="juan.perez@ejemplo.com"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange("email", e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Recibirás tus tickets en este correo
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="flex text-sm font-semibold mb-2 items-center gap-2">
+                        <Phone className="w-4 h-4" />
+                        Teléfono *
+                      </label>
+                      <Input
+                        type="tel"
+                        placeholder="+1 234 567 8900"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange("phone", e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Selección de Asientos */}
+                <Card className="p-6">
+                  <h2 className="text-2xl font-bold mb-4">Selecciona tus Asientos</h2>
+                  <p className="text-sm text-foreground/70 mb-6">
+                    Selecciona {totalItems} asiento{totalItems > 1 ? 's' : ''} para tu compra.
+                  </p>
+
+                  {/* Pantalla/Escenario */}
+                  <div className="mb-6">
+                    <div className="w-full h-2 bg-main border-2 border-border rounded-base mb-2" />
+                    <p className="text-center text-xs font-bold text-foreground/60">ESCENARIO</p>
+                  </div>
+
+                  {/* Matriz de asientos */}
+                  <div className="space-y-2 mb-6">
+                    {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map((row) => (
+                      <div key={row} className="flex items-center gap-2">
+                        <span className="w-6 text-sm font-bold text-center">{row}</span>
+                        <div className="flex gap-1 flex-1 justify-center flex-wrap">
+                          {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
+                            const seatId = `${row}${num}`
+                            const isAvailable = row === 'A' || row === 'B'
+                            const isSelected = selectedSeats.includes(seatId)
+                            
+                            return (
+                              <button
+                                key={seatId}
+                                onClick={() => handleSeatClick(seatId, isAvailable)}
+                                disabled={!isAvailable}
+                                className={`w-8 h-8 text-xs font-bold border-2 border-border rounded-base transition-all ${
+                                  isSelected
+                                    ? 'bg-main text-main-foreground shadow-shadow'
+                                    : isAvailable
+                                    ? 'bg-secondary-background hover:bg-main/20 hover:scale-110'
+                                    : 'bg-foreground/20 cursor-not-allowed opacity-40'
+                                }`}
+                                title={seatId}
+                              >
+                                {num}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Leyenda */}
+                  <div className="flex flex-wrap gap-4 text-xs mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-secondary-background border-2 border-border rounded-base" />
+                      <span>Disponible</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-main border-2 border-border rounded-base" />
+                      <span>Seleccionado</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-foreground/20 border-2 border-border rounded-base opacity-40" />
+                      <span>No disponible</span>
+                    </div>
+                  </div>
+
+                  {/* Asientos seleccionados */}
+                  {selectedSeats.length > 0 && (
+                    <div className="p-4 bg-main/10 border-2 border-border rounded-base">
+                      <p className="font-bold mb-2">Asientos seleccionados:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedSeats.map((seat) => (
+                          <span key={seat} className="px-3 py-1 bg-main text-main-foreground text-sm font-bold rounded-base border-2 border-border">
+                            {seat}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </Card>
+
+                <div className="flex gap-3">
                   <Button
                     onClick={handleNextStep}
                     disabled={!validateStep1()}
                     className="flex-1"
                   >
                     Continuar al Pago
+                    {selectedSeats.length < totalItems && (
+                      <span className="ml-2">({selectedSeats.length}/{totalItems})</span>
+                    )}
                   </Button>
                 </div>
-              </Card>
+              </div>
             )}
 
             {currentStep === 2 && (
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                   <CreditCard className="w-6 h-6 text-main" />
-                  Información de Pago
+                  Método de Pago
                 </h2>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
+                  {/* Método de pago guardado */}
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Número de Tarjeta *</label>
-                    <Input
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      maxLength={19}
-                      value={formData.cardNumber}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\s/g, "")
-                        const formatted = value.match(/.{1,4}/g)?.join(" ") || value
-                        handleInputChange("cardNumber", formatted)
-                      }}
-                    />
+                    <label className="flex items-center gap-3 p-4 border-2 border-border rounded-base cursor-pointer hover:bg-main/5 transition-colors">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={!useNewPayment}
+                        onChange={() => setUseNewPayment(false)}
+                        className="w-5 h-5"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CreditCard className="w-5 h-5 text-main" />
+                          <span className="font-bold">
+                            {savedPaymentMethod.type.toUpperCase()} •••• {savedPaymentMethod.lastDigits}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground/70">
+                          {savedPaymentMethod.cardName}
+                        </p>
+                        <p className="text-xs text-foreground/60 mt-1">
+                          Expira: {savedPaymentMethod.expiryDate}
+                        </p>
+                      </div>
+                      {!useNewPayment && (
+                        <CheckCircle className="w-6 h-6 text-main" />
+                      )}
+                    </label>
                   </div>
 
+                  {/* Agregar nuevo método de pago */}
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Nombre en la Tarjeta *</label>
-                    <Input
-                      type="text"
-                      placeholder="JUAN PEREZ"
-                      value={formData.cardName}
-                      onChange={(e) => handleInputChange("cardName", e.target.value.toUpperCase())}
-                    />
-                  </div>
+                    <label className="flex items-center gap-3 p-4 border-2 border-border rounded-base cursor-pointer hover:bg-main/5 transition-colors">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={useNewPayment}
+                        onChange={() => setUseNewPayment(true)}
+                        className="w-5 h-5"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="w-5 h-5 text-main" />
+                          <span className="font-bold">Agregar nuevo método de pago</span>
+                        </div>
+                      </div>
+                      {useNewPayment && (
+                        <CheckCircle className="w-6 h-6 text-main" />
+                      )}
+                    </label>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Fecha de Expiración *</label>
-                      <Input
-                        type="text"
-                        placeholder="MM/AA"
-                        maxLength={5}
-                        value={formData.expiryDate}
-                        onChange={(e) => {
-                          let value = e.target.value.replace(/\D/g, "")
-                          if (value.length >= 2) {
-                            value = value.slice(0, 2) + "/" + value.slice(2, 4)
-                          }
-                          handleInputChange("expiryDate", value)
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">CVV *</label>
-                      <Input
-                        type="text"
-                        placeholder="123"
-                        maxLength={4}
-                        value={formData.cvv}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "")
-                          handleInputChange("cvv", value)
-                        }}
-                      />
-                    </div>
+                    {/* Formulario de nuevo método de pago */}
+                    {useNewPayment && (
+                      <div className="mt-4 p-4 border-2 border-border rounded-base space-y-4 bg-secondary-background">
+                        <div>
+                          <label className="block text-sm font-semibold mb-2">Número de Tarjeta *</label>
+                          <Input
+                            type="text"
+                            placeholder="1234 5678 9012 3456"
+                            maxLength={19}
+                            value={formData.cardNumber}
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/\s/g, "")
+                              const formatted = value.match(/.{1,4}/g)?.join(" ") || value
+                              handleInputChange("cardNumber", formatted)
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold mb-2">Nombre en la Tarjeta *</label>
+                          <Input
+                            type="text"
+                            placeholder="NOMBRE COMPLETO"
+                            value={formData.cardName}
+                            onChange={(e) => handleInputChange("cardName", e.target.value.toUpperCase())}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-semibold mb-2">Expiración *</label>
+                            <Input
+                              type="text"
+                              placeholder="MM/AA"
+                              maxLength={5}
+                              value={formData.expiryDate}
+                              onChange={(e) => {
+                                let value = e.target.value.replace(/\D/g, "")
+                                if (value.length >= 2) {
+                                  value = value.slice(0, 2) + "/" + value.slice(2, 4)
+                                }
+                                handleInputChange("expiryDate", value)
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-semibold mb-2">CVV *</label>
+                            <Input
+                              type="text"
+                              placeholder="123"
+                              maxLength={4}
+                              value={formData.cvv}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, "")
+                                handleInputChange("cvv", value)
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-4 bg-main/10 border-2 border-border rounded-base">
@@ -413,7 +514,7 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <Lock className="w-4 h-4" />
-                        Realizar Pago
+                        Realizar Pago ${total.toFixed(2)}
                       </>
                     )}
                   </Button>
@@ -443,12 +544,16 @@ export default function CheckoutPage() {
                   <p className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-main" />
                     <span>
-                      Hemos enviado la confirmación a <strong>{formData.email}</strong>
+                      Confirmación enviada a <strong>{formData.email}</strong>
                     </span>
                   </p>
                   <p className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-main" />
                     <span>Tus tickets han sido enviados por correo electrónico</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-main" />
+                    <span>Asientos: <strong>{selectedSeats.join(', ')}</strong></span>
                   </p>
                 </div>
 
