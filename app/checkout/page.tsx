@@ -10,7 +10,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { ArrowLeft, CreditCard, Lock, CheckCircle, ShoppingBag, User, Mail, Phone } from "lucide-react"
 import { getItems, getItemsCount, type CartItem } from "@/lib/cartStore"
-import {saveSelectedSeat, getSelectedSeat} from "@/lib/cartStore";
+import { saveSelectedSeat, getSelectedSeat, removeSelectedSeat } from "@/lib/cartStore";
 
 // Método de pago guardado (mockeado)
 const savedPaymentMethod = {
@@ -61,8 +61,61 @@ export default function CheckoutPage() {
         email: mockUserData.email,
       }
       localStorage.setItem("checkoutPersonalData", JSON.stringify(personalData))
+      // Cargar asiento seleccionado guardado (si existe) y marcarlo como seleccionado
+      let savedSeat = getSelectedSeat()
+      if (!savedSeat && typeof window !== "undefined") {
+        try {
+          const rawSel = localStorage.getItem("cart:selectedSeat")
+          if (rawSel) savedSeat = JSON.parse(rawSel)
+        } catch {}
+      }
+      if (savedSeat && savedSeat.id) {
+        setSelectedSeats([savedSeat.id])
+      } else {
+        setSelectedSeats([])
+      }
     }, 0)
     return () => clearTimeout(timer)
+  }, [])
+
+  // Listeners para actualizar UI en tiempo real cuando el store cambia
+  useEffect(() => {
+    function handleCartChanged() {
+      setItems(getItems())
+    }
+
+    function handleSelectedChanged(ev: Event) {
+      const detail = (ev as CustomEvent).detail as { id?: string } | null
+      if (!detail || !detail.id) {
+        // Si se elimina la selección desde otra fuente
+        setSelectedSeats([])
+        return
+      }
+
+      setSelectedSeats((prev) => {
+        const currentLimit = getItemsCount()
+        // Si ya lo teníamos, no hacemos nada
+        if (prev.includes(detail.id!)) return prev
+
+        // Si aún caben asientos, añadimos
+        if (prev.length < currentLimit) return [...prev, detail.id!]
+
+        // Si no caben, reemplazamos por la nueva selección (guardamos la última)
+        return [detail.id!]
+      })
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("cart:changed", handleCartChanged)
+      window.addEventListener("cart:selectedChanged", handleSelectedChanged as EventListener)
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("cart:changed", handleCartChanged)
+        window.removeEventListener("cart:selectedChanged", handleSelectedChanged as EventListener)
+      }
+    }
   }, [])
 
   const subtotal = items.reduce((acc, it) => acc + it.price * it.quantity, 0)
@@ -93,16 +146,25 @@ export default function CheckoutPage() {
 
   const handleSeatClick = (seatId: string, isAvailable: boolean) => {
     if (!isAvailable) return
-    
-    if (selectedSeats.includes(seatId)) {
-      // Deseleccionar
-      setSelectedSeats(selectedSeats.filter((id) => id !== seatId))
-    } else {
-      // Seleccionar (si no excede el límite)
-      if (selectedSeats.length < totalItems) {
-        setSelectedSeats([...selectedSeats, seatId])
+
+    setSelectedSeats((prev) => {
+      // Si ya estaba seleccionado -> quitar
+      if (prev.includes(seatId)) {
+        const next = prev.filter((id) => id !== seatId)
+        // Si el asiento deseleccionado era el guardado, eliminar del store
+        const saved = getSelectedSeat()
+        if (saved && saved.id === seatId) removeSelectedSeat()
+        return next
       }
-    }
+
+      // Seleccionar (si no excede el límite)
+      if (prev.length < totalItems) {
+        // Persistir el asiento seleccionado en el store (guardamos el último seleccionado)
+        saveSelectedSeat({ id: seatId, name: seatId, quantity: 1 })
+        return [...prev, seatId]
+      }
+      return prev
+    })
   }
 
   const validateStep1 = () => {
@@ -308,7 +370,7 @@ export default function CheckoutPage() {
                             return (
                               <button
                               
-                                key={seatId} 
+                                key={seatId}  // Si IASeat es valor no nula, marcar como seleccionado
                                 onClick={() => handleSeatClick(seatId, isAvailable)}
                                 disabled={!isAvailable}
                                 className={`w-8 h-8 text-xs font-bold border-2 border-border rounded-base transition-all ${
