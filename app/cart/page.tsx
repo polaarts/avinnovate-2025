@@ -225,12 +225,6 @@ export default function CartPage() {
                     Continuar Comprando
                   </Button>
                 </Link>
-
-                <div className="p-4 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground">
-                    <strong>Nota:</strong> Los tickets se enviarán a tu correo electrónico después de completar la compra.
-                  </p>
-                </div>
               </Card>
             </div>
           </div>
