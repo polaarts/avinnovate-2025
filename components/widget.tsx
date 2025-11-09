@@ -80,7 +80,7 @@ export default function ElevenLabs() {
       
     },
     QueueAsks: () => {
-      
+      console.log("Ejecutando QueueAsks");
     }
   };
   
