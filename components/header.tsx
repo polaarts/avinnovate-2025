@@ -48,7 +48,7 @@ export default function Header() {
           className="flex items-center gap-2 font-bold text-lg md:text-xl text-primary shrink-0 hover:text-primary/80 transition-colors group"
         >
           <Ticket className="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-12 transition-transform duration-300" />
-          <span className="hidden sm:inline">TicketHub</span>
+          <span className="hidden sm:inline">Ticketin</span>
         </Link>
 
         {/* Nav */}
@@ -56,8 +56,8 @@ export default function Header() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`#${category.id}`}
-              className="flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-all duration-200 group relative py-1"
+              href={`/${category.id}`}
+              className="flex items-center hover:underline underline-offset-4 gap-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-all duration-200 group relative py-1"
             >
               <category.icon className="w-4 h-4 group-hover:scale-125 transition-transform duration-300" />
               <span>{category.name}</span>
@@ -65,6 +65,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
+        </div>
 
         <div className="flex items-center gap-2 md:gap-3">
           {/* Carrito */}

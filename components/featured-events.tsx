@@ -93,9 +93,9 @@ export default function FeaturedEvents() {
         {/* Grid de eventos con mejor espaciado */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {featuredEvents.map((event) => (
-            <Card 
+            <div 
               key={event.id} 
-              className="overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group border border-border/50 hover:border-primary/20 bg-card hover:-translate-y-2"
+              className="overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group border border-border/50 hover:border-primary/20 bg-card "
             >
               {/* Imagen con overlay mejorado */}
               <div className="relative h-52 overflow-hidden bg-muted">
@@ -200,7 +200,7 @@ export default function FeaturedEvents() {
                   isReservedByAgent={false}
                 />
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 
