@@ -22,7 +22,7 @@ interface Event {
 const featuredEvents: Event[] = [
   {
     id: "1",
-    title: "Concierto de Verano",
+    title: "Chico Trujillo",
     artist: "The Midnight Echoes",
     date: "15 Dic 2024",
     time: "20:00",
@@ -34,7 +34,7 @@ const featuredEvents: Event[] = [
   },
   {
     id: "2",
-    title: "Obra Teatral Clásica",
+    title: "Beethoven",
     artist: "Teatro Nacional",
     date: "22 Dic 2024",
     time: "19:30",
@@ -45,7 +45,7 @@ const featuredEvents: Event[] = [
   },
   {
     id: "3",
-    title: "Campeonato de Fútbol",
+    title: "Colo Colo vs Catolica",
     artist: "Liga Profesional",
     date: "28 Dic 2024",
     time: "17:00",
@@ -57,7 +57,7 @@ const featuredEvents: Event[] = [
   },
   {
     id: "4",
-    title: "Festival de Artes",
+    title: "Van Gogh",
     artist: "Multi-artistas",
     date: "5 Ene 2025",
     time: "10:00",

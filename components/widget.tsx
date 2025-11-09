@@ -37,23 +37,15 @@ export default function ElevenLabs() {
         console.log("🛒 Agregando nombre y cantidad:", nombre, quantity);
         console.log(events);
         // Si el nombre no existe en events, se pregunta denuevo
-        if (nombre ) {
-            return "¿No encuentro ese evento? ¿Qué evento te gustaría agregar al carrito?";
-
-        }
 
 
 
 
       // Normalizamos el nombre para buscarlo sin errores
-        
+
       const evento = (events as any[]).find(
         (ev) => ev.title.toLowerCase() === nombre.toLowerCase()
       )
-
-      if (!evento) {
-        return `No encontré un evento llamado "${nombre}".`
-      }
       console.log("🛒 Agregando al carrito por voz:", evento)
 
       // ✅ Llamada directa a tu función global addItem()
@@ -82,7 +74,7 @@ export default function ElevenLabs() {
   return (
     <>
       {/* El widget en sí */}
-      <elevenlabs-convai agent-id="agent_9301k9hrshh2fx2rnhbzwz8xd7k6"></elevenlabs-convai>
+      <elevenlabs-convai agent-id="agent_5801k9kr29djemht39yyt91tqrfm"></elevenlabs-convai>
 
       {/* Carga del script del widget */}
       <script
