@@ -10,6 +10,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { ArrowLeft, CreditCard, Lock, CheckCircle, ShoppingBag, User, Mail, Phone } from "lucide-react"
 import { getItems, getItemsCount, type CartItem } from "@/lib/cartStore"
+import {saveSelectedSeat, getSelectedSeat} from "@/lib/cartStore";
 
 // Método de pago guardado (mockeado)
 const savedPaymentMethod = {
@@ -285,12 +286,15 @@ export default function CheckoutPage() {
                         <div className="flex gap-1 flex-1 justify-center flex-wrap">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
                             const seatId = `${row}${num}`
+
                             const isAvailable = row === 'A' || row === 'B'
                             const isSelected = selectedSeats.includes(seatId)
+                            const IAseat = getSelectedSeat();
                             
                             return (
                               <button
-                                key={seatId}
+                              
+                                key={seatId} 
                                 onClick={() => handleSeatClick(seatId, isAvailable)}
                                 disabled={!isAvailable}
                                 className={`w-8 h-8 text-xs font-bold border-2 border-border rounded-base transition-all ${

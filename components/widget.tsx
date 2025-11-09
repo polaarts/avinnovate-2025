@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useRegisterConvaiTools } from "@/hooks/useRegisterConvaiTools";
 import { addItem } from "@/lib/cartStore" // ✅ importa la función
 import events from "@/data/events.json" assert { type: "json" } // para buscar el evento
-
+import { saveSelectedSeat, getSelectedSeat } from "@/lib/cartStore";
 
 
 // 1. Declaramos el custom element para TypeScript
@@ -81,9 +81,40 @@ export default function ElevenLabs() {
     },
     QueueAsks: () => {
       console.log("Ejecutando QueueAsks");
+      
+    },
+    SelectSeat:({ seatId }: { seatId: string }) => {
+      console.log("Seleccionando asiento con Id:", seatId);
+      // Aquí podrías llamar a una función para seleccionar el asiento en tu store
+      saveSelectedSeat({ id: seatId ,name: seatId, quantity: 1 });
+      console.log("Asiento seleccionado",getSelectedSeat());
+      return `Asiento ${seatId} seleccionado.`;
+    },
+    // Rellena el formulario de checkout mediante un CustomEvent capturado en la página
+    FillCheckoutFields: (payload: {
+      firstName?: string;
+      lastName?: string;
+      email?: string;
+      phone?: string;
+    }) => {
+      const safe = {
+        form: {
+          firstName: payload.firstName?.trim() || undefined,
+          lastName: payload.lastName?.trim() || undefined,
+          email: payload.email?.trim() || undefined,
+          phone: payload.phone?.trim() || undefined,
+        }
+      };
+
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("checkout:fill", { detail: safe }));
+      }
+      return "Datos enviados al checkout";
     }
   };
   
+
+
 
 
   // Registramos el handler usando el hook reutilizable

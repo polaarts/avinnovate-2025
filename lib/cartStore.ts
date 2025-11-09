@@ -11,9 +11,18 @@ export type CartItem = {
   category?: string
   isReserved?: boolean
 }
+export type SeatItem = {
+    id: string
+    name: string
+    quantity?: number
+}
+
 
 // ---- estado de módulo ----
 let _items: CartItem[] = []
+
+let _seats: SeatItem[] = []
+let _selectedSeat: SeatItem | null = null
 
 // (opcional) hidratar desde localStorage en cliente
 if (typeof window !== "undefined") {
@@ -71,6 +80,30 @@ export function updateQuantity(id: string, qty: number) {
 export function getItemsCount(): number {
   return _items.reduce((acc, it) => acc + it.quantity, 0)
 }
+// ---------- Funciones para asiento seleccionado ----------
+
+export function saveSelectedSeat(seat: SeatItem) {
+  _selectedSeat = seat
+  if (typeof window !== "undefined") {
+    localStorage.setItem("cart:selectedSeat", JSON.stringify(_selectedSeat))
+    window.dispatchEvent(new CustomEvent("cart:selectedChanged", { detail: _selectedSeat }))
+  }
+  listeners.forEach(fn => fn())
+}
+
+export function getSelectedSeat(): SeatItem | null {
+  return _selectedSeat
+}
+
+export function removeSelectedSeat() {
+  _selectedSeat = null
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("cart:selectedSeat")
+    window.dispatchEvent(new CustomEvent("cart:selectedChanged", { detail: null }))
+  }
+  listeners.forEach(fn => fn())
+}
+
 
 // Suscripción opcional (si no quieres usar window events)
 export function subscribeCart(listener: () => void) {
