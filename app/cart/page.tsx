@@ -71,29 +71,35 @@ export default function CartPage() {
           Volver a inicio
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Lista de items del carrito */}
-          <div className="lg:col-span-2">
+        {items.length === 0 ? (
+          <div className="w-full">
             <div className="flex items-center gap-3 mb-6">
               <ShoppingBag className="w-6 h-6 text-primary" />
               <h1 className="text-3xl md:text-4xl font-bold">Mi Carrito</h1>
-              <span className="text-muted-foreground">({items.length} items)</span>
+              <span className="text-muted-foreground">(0 items)</span>
             </div>
-
-            {items.length === 0 ? (
-              <Card className="p-12 text-center">
-                <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                <h2 className="text-2xl font-bold mb-2">Tu carrito está vacío</h2>
-                <p className="text-muted-foreground mb-6">
-                  Explora nuestros eventos y agrega algunos tickets a tu carrito
-                </p>
-                <Link href="/">
-                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                    Explorar Eventos
-                  </Button>
-                </Link>
-              </Card>
-            ) : (
+            <div className="p-12 text-center">
+              <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h2 className="text-2xl font-bold mb-2">Tu carrito está vacío</h2>
+              <p className="text-muted-foreground mb-6">
+                Explora nuestros eventos y agrega algunos tickets a tu carrito
+              </p>
+              <Link href="/">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  Explorar Eventos
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Lista de items del carrito */}
+            <div className="lg:col-span-2 w-full">
+              <div className="flex items-center gap-3 mb-6">
+                <ShoppingBag className="w-6 h-6 text-primary" />
+                <h1 className="text-3xl md:text-4xl font-bold">Mi Carrito</h1>
+                <span className="text-muted-foreground">({items.length} items)</span>
+              </div>
               <div className="space-y-4">
                 {items.map((item) => {
                   console.log('Item:', item.title, 'isReserved:', item.isReserved)
@@ -179,11 +185,9 @@ export default function CartPage() {
               )
                 })}
               </div>
-            )}
-          </div>
+            </div>
 
-          {/* Resumen del pedido */}
-          {items.length > 0 && (
+            {/* Resumen del pedido */}
             <div className="lg:col-span-1">
               <Card className="p-6 sticky top-24">
                 <h2 className="text-xl font-bold mb-6">Resumen del Pedido</h2>
@@ -193,37 +197,37 @@ export default function CartPage() {
                     <span className="text-muted-foreground">Subtotal ({totalItems} tickets)</span>
                     <span className="font-semibold">${subtotal.toFixed(2)}</span>
                   </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Comisión de servicio</span>
-                  <span className="font-semibold">${serviceFee.toFixed(2)}</span>
-                </div>
-                <div className="border-t border-border pt-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold">Total</span>
-                    <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Comisión de servicio</span>
+                    <span className="font-semibold">${serviceFee.toFixed(2)}</span>
+                  </div>
+                  <div className="border-t border-border pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-bold">Total</span>
+                      <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                Proceder al Pago
-              </Button>
-              
-              <Link href="/">
-                <Button className="w-full">
-                  Continuar Comprando
+                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                  Proceder al Pago
                 </Button>
-              </Link>
+                
+                <Link href="/">
+                  <Button className="w-full">
+                    Continuar Comprando
+                  </Button>
+                </Link>
 
-              <div className="p-4 bg-muted/50 rounded-lg">
-                <p className="text-xs text-muted-foreground">
-                  <strong>Nota:</strong> Los tickets se enviarán a tu correo electrónico después de completar la compra.
-                </p>
-              </div>
-            </Card>
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground">
+                    <strong>Nota:</strong> Los tickets se enviarán a tu correo electrónico después de completar la compra.
+                  </p>
+                </div>
+              </Card>
+            </div>
           </div>
-          )}
-        </div>
+        )}
       </main>
 
       <Footer />

@@ -3,16 +3,13 @@
 import { useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Ticket, Music, Theater, Trophy, Film, Users, ShoppingCart, User, ChevronDown } from "lucide-react"
+import { Ticket, ShoppingCart, User, ChevronDown, Star, Home } from "lucide-react"
 import { useCartStore } from "@/store/cart-store"
 
 export default function Header() {
   const categories = [
-    { id: "musica", name: "Música", icon: Music },
-    { id: "cine", name: "Cine", icon: Film },
-    { id: "deportes", name: "Deportes", icon: Trophy },
-    { id: "teatro", name: "Teatro", icon: Theater },
-    { id: "festivales", name: "Festivales", icon: Users },
+    { id: "", name: "Inicio", icon: Home },
+    { id: "recommendations", name: "Ver mis recomendaciones", icon: Star },
   ]
 
   // Usuario mockeado
@@ -33,29 +30,30 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
         {/* Logo mejorado */}
-        <Link 
+        <div className="flex flex-row space-x-2">
+          <Link 
           href="/" 
           className="flex items-center gap-2 font-bold text-lg md:text-xl text-primary shrink-0 hover:text-primary/80 transition-colors group"
         >
           <Ticket className="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-12 transition-transform duration-300" />
-          <span className="hidden sm:inline">TicketHub</span>
+          <span className="hidden sm:inline">Ticketin</span>
         </Link>
 
         {/* Navigation mejorada */}
-        <nav className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+        <nav className="hidden lg:flex items-center gap-4 ml-4 flex-1 justify-center">
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`#${category.id}`}
-              className="flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-all duration-200 group relative py-1"
+              href={`/${category.id}`}
+              className="flex items-center hover:underline underline-offset-4 gap-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-all duration-200 group relative py-1"
             >
-              <category.icon className="w-4 h-4 group-hover:scale-125 transition-transform duration-300" />
-              <span>{category.name}</span>
+              <span className="mt-1">{category.name}</span>
               {/* Underline animado */}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
           ))}
         </nav>
+        </div>
 
         <div className="flex items-center gap-2 md:gap-3">
           {/* Carrito mejorado */}
