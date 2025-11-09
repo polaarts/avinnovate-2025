@@ -79,8 +79,10 @@ export default function ElevenLabs() {
       console.log("Ejecutando ruta con Id:", Id);
       
     },
-    QueueAsks: () => {
-      console.log("Ejecutando QueueAsks");
+    QueueAsks: ({ seatId }: { seatId: string }) => {
+      saveSelectedSeat({ id: seatId ,name: seatId, quantity: 1 });
+      console.log("Asiento seleccionado en queue",getSelectedSeat());
+      return `Asiento ${seatId} seleccionado en queue.`;
       
     },
     SelectSeat:({ seatId }: { seatId: string }) => {
