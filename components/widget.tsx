@@ -1,6 +1,8 @@
 "use client";
+/// <reference path="../types/elevenlabs-convai.d.ts" />
 
 import React from "react";
+import { useRouter } from "next/navigation";
 //import { addItemByName } from "@/lib/cartStore";
 import { useRegisterConvaiTools } from "@/hooks/useRegisterConvaiTools";
 import { addItem } from "@/lib/cartStore" // ✅ importa la función
@@ -21,6 +23,7 @@ declare global {
 }
 
 export default function ElevenLabs() {
+  const router = useRouter();
   // Definimos los client tools en el scope del componente
   const clientTools = {
     testTool: ({ text }: { text: string }) => {
@@ -33,13 +36,21 @@ export default function ElevenLabs() {
       //console.log("🛒 Agregado por widget:", item);
       //return `He agregado "${item.name}" al carrito.`;
     },
+    // Cambia la ruta desde el agente (cliente)
+    NavigateTo: ({ path, replace }: { path: string; replace?: boolean }) => {
+      if (!path || typeof path !== "string") return "Ruta inválida";
+      try {
+        replace ? router.replace(path) : router.push(path);
+        return `Navegando a ${path}`;
+      } catch (err) {
+        console.error("❌ Error navegando:", err);
+        return `Error al navegar a ${path}`;
+      }
+    },
     AddEventByVoice: ({ nombre, quantity }: { nombre: string, quantity: number }) => {
         console.log("🛒 Agregando nombre y cantidad:", nombre, quantity);
         console.log(events);
         // Si el nombre no existe en events, se pregunta denuevo
-
-
-
 
       // Normalizamos el nombre para buscarlo sin errores
 
@@ -54,7 +65,7 @@ export default function ElevenLabs() {
         name: evento.title,         // tu carrito usa "name"
         price: evento.price,
         // Quantity variable si no, 1 por defecto
-        quantity: quantity,
+        quantity: quantity || 1,
         image: evento.image,
         date: evento.date,
         time: evento.time,
@@ -62,8 +73,11 @@ export default function ElevenLabs() {
         category: evento.category,
         isReserved: true,           // para marcar que vino del agente
       })
-
       return `He agregado "${evento.title}" al carrito.`
+    },
+    ExecuteRoute: ({ Id }: { Id: string }) => {
+      console.log("Ejecutando ruta con Id:", Id);
+      
     },
   };
   
@@ -73,8 +87,9 @@ export default function ElevenLabs() {
 
   return (
     <>
-      {/* El widget en sí */}
-      <elevenlabs-convai agent-id="agent_5801k9kr29djemht39yyt91tqrfm"></elevenlabs-convai>
+  {/* El widget en sí */}
+  {/* @ts-ignore: Custom element tipado vía declaración global */}
+  <elevenlabs-convai agent-id="agent_5801k9kr29djemht39yyt91tqrfm"></elevenlabs-convai>
 
       {/* Carga del script del widget */}
       <script

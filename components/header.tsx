@@ -69,7 +69,7 @@ export default function Header() {
         <div className="flex items-center gap-2 md:gap-3">
           {/* Carrito */}
           <Link href="/cart">
-            <Button 
+            <Button id="open-cart"
               size="sm" 
               className="relative hover:bg-accent/10 hover:text-foreground transition-all duration-200 hover:scale-105 active:scale-95"
             >
