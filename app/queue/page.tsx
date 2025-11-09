@@ -6,23 +6,23 @@ import { Users } from "lucide-react"
 import Image from "next/image"
 
 export default function QueuePage() {
-  const [peopleInQueue, setPeopleInQueue] = useState(45)
+  const TOTAL_PEOPLE = 60 // Total de personas en la fila inicial (1 minuto = 60 segundos)
+  
+  const [peopleInQueue, setPeopleInQueue] = useState(TOTAL_PEOPLE)
   const [mounted, setMounted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true)
-      // Cargar el número de personas de localStorage si existe
-      const savedQueue = localStorage.getItem("queuePeopleRemaining")
-      if (savedQueue) {
-        setPeopleInQueue(parseInt(savedQueue))
-      }
+      // Siempre comenzar con TOTAL_PEOPLE y limpiar localStorage
+      localStorage.setItem("queuePeopleRemaining", TOTAL_PEOPLE.toString())
+      setPeopleInQueue(TOTAL_PEOPLE)
     }, 0)
     return () => clearTimeout(timer)
   }, [])
 
-  // Simulación de la fila: disminuye cada 3 segundos
+  // Simulación de la fila: disminuye cada 1 segundo (60 personas en 60 segundos)
   useEffect(() => {
     if (!mounted) return
 
@@ -32,7 +32,7 @@ export default function QueuePage() {
         localStorage.setItem("queuePeopleRemaining", newCount.toString())
         return newCount
       })
-    }, 3000) // Cada 3 segundos se va una persona
+    }, 1000) // Cada 1 segundo se va una persona
 
     return () => clearInterval(timer)
   }, [mounted])
@@ -49,8 +49,8 @@ export default function QueuePage() {
     }
   }, [peopleInQueue, mounted, router])
 
-  const progressPercentage = peopleInQueue > 0 ? ((50 - peopleInQueue) / 50) * 100 : 100
-  const estimatedWaitTime = Math.ceil((peopleInQueue * 3) / 60) // minutos estimados
+  const progressPercentage = peopleInQueue > 0 ? ((TOTAL_PEOPLE - peopleInQueue) / TOTAL_PEOPLE) * 100 : 100
+  const estimatedWaitTime = peopleInQueue // segundos restantes
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -78,7 +78,7 @@ export default function QueuePage() {
 
           <div className="flex items-center justify-between mt-2">
             <p className="text-main-foreground text-sm font-medium">
-              ⏱️ Tiempo estimado de espera: <span className="font-bold">{estimatedWaitTime} min</span>
+              ⏱️ Tiempo estimado de espera: <span className="font-bold">{estimatedWaitTime}s</span>
             </p>
             
             {peopleInQueue < 10 && peopleInQueue > 0 && (
@@ -100,11 +100,31 @@ export default function QueuePage() {
 
         <div className="grid md:grid-cols-2 gap-8 items-start">
           {/* Avatar apuntando al widget */}
+          <div className="flex justify-center">
             <Image src={"/ticketin.png"} alt="Ticketin" width={500} height={300} />
-            <div>
-              <p>Descripición de lo que se hace en la fila</p>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">¿Qué sucede mientras esperas?</h2>
+            <div className="space-y-3 text-muted-foreground">
+              <p className="flex items-start gap-2">
+                <span className="text-main font-bold">1.</span>
+                <span>Estamos reservando tu lugar en el sistema</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-main font-bold">2.</span>
+                <span>Verificamos la disponibilidad de asientos en tiempo real</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-main font-bold">3.</span>
+                <span>Preparamos tu experiencia de compra personalizada</span>
+              </p>
             </div>
-
+            <div className="p-4 bg-main/10 border-2 border-border rounded-base">
+              <p className="text-sm font-semibold text-foreground">
+                💡 <strong>Consejo:</strong> Mantén esta pestaña abierta. Serás redirigido automáticamente cuando sea tu turno.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
     </div>
