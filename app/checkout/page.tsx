@@ -20,6 +20,13 @@ const savedPaymentMethod = {
   expiryDate: "12/26",
 }
 
+// Datos mockeados de información personal
+const mockUserData = {
+  firstName: "Javier",
+  lastName: "Oberto",
+  email: "javier.oberto@gmail.com",
+}
+
 export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false)
   const [items, setItems] = useState<CartItem[]>([])
@@ -29,13 +36,12 @@ export default function CheckoutPage() {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([])
   const [useNewPayment, setUseNewPayment] = useState(false)
 
-  // Datos del formulario
+  // Datos del formulario - inicializados con datos mockeados
   const [formData, setFormData] = useState({
     // Información personal
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    firstName: mockUserData.firstName,
+    lastName: mockUserData.lastName,
+    email: mockUserData.email,
     // Información de pago (para nuevo método)
     cardNumber: "",
     cardName: "",
@@ -47,6 +53,14 @@ export default function CheckoutPage() {
     const timer = setTimeout(() => {
       setMounted(true)
       setItems(getItems())
+      
+      // Guardar datos mockeados en localStorage al cargar
+      const personalData = {
+        firstName: mockUserData.firstName,
+        lastName: mockUserData.lastName,
+        email: mockUserData.email,
+      }
+      localStorage.setItem("checkoutPersonalData", JSON.stringify(personalData))
     }, 0)
     return () => clearTimeout(timer)
   }, [])
@@ -57,10 +71,24 @@ export default function CheckoutPage() {
   const totalItems = getItemsCount()
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+    setFormData((prev) => {
+      const newFormData = {
+        ...prev,
+        [field]: value,
+      }
+      
+      // Guardar información personal en localStorage
+      if (["firstName", "lastName", "email", "phone"].includes(field)) {
+        const personalData = {
+          firstName: newFormData.firstName,
+          lastName: newFormData.lastName,
+          email: newFormData.email,
+        }
+        localStorage.setItem("checkoutPersonalData", JSON.stringify(personalData))
+      }
+      
+      return newFormData
+    })
   }
 
   const handleSeatClick = (seatId: string, isAvailable: boolean) => {
@@ -82,7 +110,6 @@ export default function CheckoutPage() {
       formData.firstName.trim() !== "" &&
       formData.lastName.trim() !== "" &&
       formData.email.trim() !== "" &&
-      formData.phone.trim() !== "" &&
       selectedSeats.length === totalItems
     )
   }
@@ -248,19 +275,6 @@ export default function CheckoutPage() {
                       <p className="text-xs text-muted-foreground mt-1">
                         Recibirás tus tickets en este correo
                       </p>
-                    </div>
-
-                    <div>
-                      <label className="flex text-sm font-semibold mb-2 items-center gap-2">
-                        <Phone className="w-4 h-4" />
-                        Teléfono *
-                      </label>
-                      <Input
-                        type="tel"
-                        placeholder="+1 234 567 8900"
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
-                      />
                     </div>
                   </div>
                 </Card>
@@ -588,7 +602,7 @@ export default function CheckoutPage() {
                   <div key={item.id} className="flex gap-3 pb-4 border-b border-border">
                     <div className="relative w-16 h-16 rounded-base overflow-hidden shrink-0 bg-muted border-2 border-border">
                       <Image
-                        src={item.image || "/placeholder.svg"}
+                        src={"/placeholder.png"}
                         alt={item.name}
                         fill
                         className="object-cover"
@@ -625,15 +639,6 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </div>
-
-              {currentStep !== 3 && (
-                <div className="p-4 bg-main/10 border-2 border-border rounded-base">
-                  <p className="text-xs text-foreground/70">
-                    <strong>💡 Nota:</strong> Los tickets se enviarán a tu correo electrónico
-                    inmediatamente después de completar el pago.
-                  </p>
-                </div>
-              )}
             </Card>
           </div>
         </div>
