@@ -13,7 +13,6 @@ import { useEffect, useState } from "react"
 import {
   getItems,
   getItemsCount,
-  getTotal,
   removeItemByName,
   updateQuantity,
   subscribeCart,
@@ -220,9 +219,11 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  Proceder al Pago
-                </Button>
+                <Link href="/queue">
+                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                    Proceder al Pago
+                  </Button>
+                </Link>
 
                 <Link href="/">
                   <Button className="w-full">

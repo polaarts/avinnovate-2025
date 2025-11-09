@@ -75,7 +75,7 @@ export default function HeroSection() {
             <div className="relative flex gap-2 md:gap-3">
               <div className="flex-1 bg-white mt-1 rounded-xl relative">
                 <Input
-                  placeholder="Busca eventos, artistas o lugares..."
+                  placeholder="Busca tu evento..."
                   className=" pl-11 md:pl-14  pr-4 md:pr-5 py-4 md:py-5 text-base md:text-lg rounded-xl bg-primary-foreground text-foreground placeholder:text-muted-foreground border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300 focus-visible:ring-2 focus-visible:ring-accent"
                 />
                 <Search className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />

@@ -1,20 +1,25 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Users } from "lucide-react"
 import Image from "next/image"
 
 export default function QueuePage() {
   const [peopleInQueue, setPeopleInQueue] = useState(45)
   const [mounted, setMounted] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
-    setMounted(true)
-    // Cargar el número de personas de localStorage si existe
-    const savedQueue = localStorage.getItem("queuePeopleRemaining")
-    if (savedQueue) {
-      setPeopleInQueue(parseInt(savedQueue))
-    }
+    const timer = setTimeout(() => {
+      setMounted(true)
+      // Cargar el número de personas de localStorage si existe
+      const savedQueue = localStorage.getItem("queuePeopleRemaining")
+      if (savedQueue) {
+        setPeopleInQueue(parseInt(savedQueue))
+      }
+    }, 0)
+    return () => clearTimeout(timer)
   }, [])
 
   // Simulación de la fila: disminuye cada 3 segundos
@@ -31,6 +36,18 @@ export default function QueuePage() {
 
     return () => clearInterval(timer)
   }, [mounted])
+
+  // Redirigir a checkout cuando la fila llegue a 0
+  useEffect(() => {
+    if (mounted && peopleInQueue === 0) {
+      // Pequeño delay para que el usuario vea que llegó a 0
+      const redirectTimer = setTimeout(() => {
+        router.push("/checkout")
+      }, 2000) // 2 segundos de delay
+
+      return () => clearTimeout(redirectTimer)
+    }
+  }, [peopleInQueue, mounted, router])
 
   const progressPercentage = peopleInQueue > 0 ? ((50 - peopleInQueue) / 50) * 100 : 100
   const estimatedWaitTime = Math.ceil((peopleInQueue * 3) / 60) // minutos estimados
@@ -60,6 +77,9 @@ export default function QueuePage() {
           </div>
 
           <div className="flex items-center justify-between mt-2">
+            <p className="text-main-foreground text-sm font-medium">
+              ⏱️ Tiempo estimado de espera: <span className="font-bold">{estimatedWaitTime} min</span>
+            </p>
             
             {peopleInQueue < 10 && peopleInQueue > 0 && (
               <p className="text-main-foreground text-sm font-semibold">
@@ -69,7 +89,7 @@ export default function QueuePage() {
 
             {peopleInQueue === 0 && (
               <p className="text-main-foreground text-sm font-semibold">
-                ¡Es tu turno!
+                ✅ ¡Es tu turno! Redirigiendo al pago...
               </p>
             )}
           </div>
