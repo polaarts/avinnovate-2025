@@ -5,9 +5,10 @@ import React from "react";
 import { useRouter } from "next/navigation";
 //import { addItemByName } from "@/lib/cartStore";
 import { useRegisterConvaiTools } from "@/hooks/useRegisterConvaiTools";
-import { addItem } from "@/lib/cartStore" // ✅ importa la función
+import { addItem, clearCart } from "@/lib/cartStore" // ✅ importa la función
 import events from "@/data/events.json" assert { type: "json" } // para buscar el evento
-import { saveSelectedSeat, getSelectedSeat } from "@/lib/cartStore";
+import { saveSelectedSeat, getSelectedSeat, removeSelectedSeat } from "@/lib/cartStore";
+import { Delete } from "lucide-react";
 
 
 // 1. Declaramos el custom element para TypeScript
@@ -40,6 +41,7 @@ export default function ElevenLabs() {
     NavigateTo: ({ path, replace }: { path: string; replace?: boolean }) => {
       if (!path || typeof path !== "string") return "Invalid route";
       try {
+        removeSelectedSeat();
         replace ? router.replace(path) : router.push(path);
         return `Navigating to ${path}`;
       } catch (err) {
@@ -59,7 +61,7 @@ export default function ElevenLabs() {
       )
       console.log("🛒 Adding to cart by voice:", evento)
 
-      // ✅ Llamada directa a tu función global addItem()
+      // Llamada directa a tu función global addItem()
       addItem({
         id: evento.id,
         name: evento.title,         // tu carrito usa "name"
@@ -77,6 +79,17 @@ export default function ElevenLabs() {
     },
     ExecuteRoute: ({ Id }: { Id: string }) => {
       console.log("Ejecutando ruta con Id:", Id);
+      const safeId = (window as any).CSS?.escape ? (window as any).CSS.escape(Id) : Id.replace(/[^a-zA-Z0-9\-_:.]/g, "\\$&")
+      console.log("Ejecutando ruta con Id seguro:", safeId);
+      const el = document.getElementById(Id) || document.querySelector(`#${safeId}`)
+      console.log("Elemento encontrado:", el);
+      if (el) {
+        el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        return `Ruta con Id ${Id} ejecutada.`;
+      } else {
+        return `No se encontró ningún elemento con Id ${Id}.`;
+      }
+
       
     },
     QueueAsks: ({ seatId }: { seatId: string }) => {
@@ -92,7 +105,11 @@ export default function ElevenLabs() {
       console.log("Selected seat",getSelectedSeat());
       return `Seat ${seatId} selected.`;
     },
-    // Fills the checkout form via a CustomEvent captured on the page
+    CleanCart:() => {
+      clearCart();
+      removeSelectedSeat();
+      console.log("Carrito limpio");
+    },
     FillCheckoutFields: (payload: {
       firstName?: string;
       lastName?: string;

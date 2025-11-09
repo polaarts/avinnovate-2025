@@ -52,7 +52,13 @@ export function getItems(): CartItem[] {
 export function getTotal(): number {
   return _items.reduce((acc, it) => acc + it.price * it.quantity, 0)
 }
+//Funcion para eliminar todos lso items del carrito
+export function clearCart(): void {
+  _items = [];
+  persistAndNotify();
+}
 
+// Agregar item (si ya existe, sumar cantidad)
 export function addItem(item: CartItem) {
   const found = _items.find(i => i.id === item.id)
   if (found) {
