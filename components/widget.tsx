@@ -79,8 +79,12 @@ export default function ElevenLabs() {
       console.log("Ejecutando ruta con Id:", Id);
       
     },
+    QueueAsks: () => {
+      
+    }
   };
   
+
 
   // Registramos el handler usando el hook reutilizable
   useRegisterConvaiTools(clientTools);
