@@ -144,7 +144,7 @@ export default function RecommendationsPage() {
                     {/* Imagen */}
                     <div className="relative h-48 overflow-hidden bg-muted">
                       <Image
-                        src={event.image}
+                        src={"/placeholder.png"}
                         alt={event.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"

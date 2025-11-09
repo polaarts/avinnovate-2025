@@ -100,7 +100,7 @@ export default function FeaturedEvents() {
               {/* Imagen con overlay mejorado */}
               <div className="relative h-52 overflow-hidden bg-muted">
                 <Image
-                  src={event.image || "/placeholder.svg"}
+                  src={"/placeholder.png"}
                   alt={event.title}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"

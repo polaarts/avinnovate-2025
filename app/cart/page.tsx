@@ -117,7 +117,7 @@ export default function CartPage() {
                       {/* Imagen del evento */}
                       <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden shrink-0 bg-muted">
                         <Image
-                          src={item.image || "/placeholder.svg"}
+                          src={"/placeholder.png"}
                           alt={item.name}
                           fill
                           className="object-cover"
@@ -132,11 +132,6 @@ export default function CartPage() {
                               {item.category && (
                                 <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded">
                                   {item.category}
-                                </span>
-                              )}
-                              {item.isReserved && (
-                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded shadow-sm">
-                                  Reservado
                                 </span>
                               )}
                             </div>
